@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'art roco'
-copyright = '2019, Juan Carlos Gomez (gojuancarlos@)'
-author = 'Juan Carlos Gomez (gojuancarlos@)'
+project = 'art rocò'
+copyright = '2019, Juan Carlos Gomez (juancarlosgomezpomar@)'
+author = 'Juan Carlos Gomez (juancarlosgomezpomar@)'
 
 
 # -- General configuration ---------------------------------------------------

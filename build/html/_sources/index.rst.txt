@@ -8,7 +8,14 @@ Welcome to art roco's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :glob:
    :caption: Contents:
+
+   ros/*
+   opencv/*
+   arduino/*
+ 
+
 
 
 

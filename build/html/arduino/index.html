@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Self-balancing robots with the pieces of a CNC &#8212; art rocò  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../opencv/index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="self-balancing-robots-with-the-pieces-of-a-cnc">
+<h1>Self-balancing robots with the pieces of a CNC<a class="headerlink" href="#self-balancing-robots-with-the-pieces-of-a-cnc" title="Permalink to this headline">¶</a></h1>
+<p>3D printing machines are already ubiquitious. We will see how to resuse the parts of your CNC to make a self-balancing robot.</p>
+<div class="section" id="parts">
+<h2>PARTS<a class="headerlink" href="#parts" title="Permalink to this headline">¶</a></h2>
+<p>The parts that I have gathered are the following:</p>
+<ul class="simple">
+<li><p>1 Arduino</p></li>
+<li><p>1 driver shield for Arduino</p></li>
+<li><p>2 Stepper motors Nema 15.</p></li>
+</ul>
+<p>Additionally you will need:</p>
+<ul class="simple">
+<li><p>2 Wheels</p></li>
+<li><p>Gyro/.</p></li>
+</ul>
+</div>
+<div class="section" id="code">
+<h2>CODE<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>The code is extracted from the Brobots evo that uses similar hardware.
+In order to make use of the code with an Arduino UNO some registers have to be changed.</p>
+<div class="section" id="timer-counter">
+<h3>Timer/Counter<a class="headerlink" href="#timer-counter" title="Permalink to this headline">¶</a></h3>
+<p>The TC0/1 in the Leonardo are more powerful than the Arduino UNO however we can adapt the values for the interruptions to….</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">art rocò</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Self-balancing robots with the pieces of a CNC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#parts">PARTS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code">CODE</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../opencv/index.html" title="previous chapter">&lt;no title&gt;</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Juan Carlos Gomez (juancarlosgomezpomar@).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/arduino/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

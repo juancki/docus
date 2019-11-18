@@ -1,3 +1,4 @@
+==========
 ROS on GCP
 ==========
 
@@ -18,24 +19,35 @@ AWS' AutoMaker_ already makes possible to deploy Robotic Operating System (ROS) 
 However, as October 2019 Google Cloud Platform does not provide a solution to robotic systems on the cloud.
 
 
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Contents:
+
 Docker enviroment to manage ROS instances
 =========================================
 
 This tutorial set ups a Google Compute Engine (GCE) instance to be connected to ROS in a custom Virtual Private Cloud (VPC) network.
 
+The following yaml file.
 
+.. literalinclude:: config.yaml
+  :language: yaml
+  :emphasize-lines: 1
+  :linenos:
 
-
-
-
+.. figure:: ./SvgFileService.svg
+  :name: image's name
 
 
 Glossary
 ========
 
-- Docker: Containerization tool
-- GCE: Virtual Machines.
-- VPC: Equivalent of VPN on the cloud.
+.. glossary::
+
+  - Docker: Containerization tool
+  - GCE: Virtual Machines.
+  - VPC: Equivalent of VPN on the cloud.
 
 
 
