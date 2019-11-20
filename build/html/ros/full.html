@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>&lt;no title&gt; &#8212; art rocò  documentation</title>
+    <title>Ubuntu 18.04 LTS on GCP for ROS with GUI &#8212; art rocò  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ROS on GCP" href="index.html" />
+    <link rel="next" title="ROS on GCP with Docker" href="index.html" />
     <link rel="prev" title="Welcome to art roco’s documentation!" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -32,7 +32,271 @@
 
           <div class="body" role="main">
             
-  <p>In this tuturial we will cover how to make your own ROS development enviroment in a GCP instance.</p>
+  <div class="section" id="ubuntu-18-04-lts-on-gcp-for-ros-with-gui">
+<h1>Ubuntu 18.04 LTS on GCP for ROS with GUI<a class="headerlink" href="#ubuntu-18-04-lts-on-gcp-for-ros-with-gui" title="Permalink to this headline">¶</a></h1>
+<p>In this tuturial we will cover the script I create to make your own ROS development enviroment in a GCP instance and connect to it using Google’s Remote Desktop.</p>
+<p>In the turorial <em>Debian 9 docker ROS on GCP</em> we used the metadata information of the <code class="docutils literal notranslate"><span class="pre">start-up</span></code> script which allows for simple interface to execute commands in a bash format.</p>
+<p>In this case, we are going to use the <code class="docutils literal notranslate"><span class="pre">.cloud-init</span></code> metedata yaml (<a class="reference external" href="https://cloud.google.com/container-optimized-os/docs/how-to/create-configure-instance">documentation</a>) to set multiple things:</p>
+<ul class="simple">
+<li><p>Set run commands to be run on the creation only.</p></li>
+<li><p>Sources of the packages to download the packages.</p></li>
+<li><p>The packages that we want to download.</p></li>
+</ul>
+<p>The files to perform the installation <code class="docutils literal notranslate"><span class="pre">chromotium.cloud-init</span></code> and <code class="docutils literal notranslate"><span class="pre">create-desktop.bash</span></code> are in the github repo <a class="reference external" href="https://github.com/juancki/ros-docker-gcp/tree/master/gce-ros-ubuntu">https://github.com/juancki/ros-docker-gcp/tree/master/gce-ros-ubuntu</a>.</p>
+<div class="section" id="lauch-instance">
+<h2>Lauch instance<a class="headerlink" href="#lauch-instance" title="Permalink to this headline">¶</a></h2>
+<p>Execute this file you will create the instance:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod +x create-desktop.bash
+./create-desktop.bash full
+</pre></div>
+</div>
+<p>You will see that the GCE instance is being launch in the console.</p>
+</div>
+<div class="section" id="connect-remote-desktop">
+<h2>Connect Remote-desktop<a class="headerlink" href="#connect-remote-desktop" title="Permalink to this headline">¶</a></h2>
+<p>On the GCP Console Terminal we execute, this will connect and wait for the initialization to finish.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcloud compute ssh desktop-full -- journalctl -f --identifier<span class="o">=</span>cloud-init
+</pre></div>
+</div>
+<p>Then, open this link in your browser: <a class="reference external" href="http://goto.google.com/crd-auth">http://goto.google.com/crd-auth</a></p>
+<p>Once accepted permissions copy the command and remember to add a name to the end of the command such as <code class="docutils literal notranslate"><span class="pre">desktop-full</span></code>. Paste it into the terminal and press enter.</p>
+<p>Then go to Chrome Remote Desktop client in your browser:  <a class="reference external" href="https://remotedesktop.google.com">https://remotedesktop.google.com</a></p>
+<p>Open a terminal an run, to set up bash:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;source /opt/ros/melodic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc
+<span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p>There your are, it should be good to go.</p>
+<p>The rest of the article is the explanation behind the values set.</p>
+<div class="section" id="create-desktop-bash">
+<h3>create-desktop.bash<a class="headerlink" href="#create-desktop-bash" title="Permalink to this headline">¶</a></h3>
+<p>Starting for the easiest part, this file only contains one command. This <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> command is to create a GCE instance with Ubuntu 18.04 LTS image with 4 cores and 15GB of RAM, 200GB of SSD disk and with the <code class="docutils literal notranslate"><span class="pre">user-data</span></code> from the file <code class="docutils literal notranslate"><span class="pre">chomoting.cloud-init</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">create-desktop.bash</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcloud compute instances create <span class="se">\</span>
+  --image-family ubuntu-1804-lts <span class="se">\</span>
+  --image-project ubuntu-os-cloud <span class="se">\</span>
+  --machine-type n1-standard-4 <span class="se">\</span>
+  --boot-disk-size<span class="o">=</span><span class="m">200</span> <span class="se">\</span>
+  --boot-disk-type<span class="o">=</span>pd-ssd <span class="se">\</span>
+  --metadata-from-file user-data<span class="o">=</span>chromoting.cloud-init <span class="se">\</span>
+  desktop-<span class="nv">$1</span>
+</pre></div>
+</div>
+</div>
+<p>The cost of this instance will have to your project will be the due to the configuration of the instance <a class="reference external" href="https://cloud.google.com/compute/docs/machine-types">type</a> that in this case is set to <code class="docutils literal notranslate"><span class="pre">n1-standard-4</span></code> but can have multple cores and the sieze of the disk</p>
+</div>
+<div class="section" id="chomoting-cloud-init">
+<h3>chomoting.cloud-init<a class="headerlink" href="#chomoting-cloud-init" title="Permalink to this headline">¶</a></h3>
+<p>This file describes in a cloud-standarized way to set up the instance. In this case we have added the sources and packages required to install ROS Melodic.</p>
+<p>Shown ahead, this file has a first commented part to show the instructions to setup the machine and to connect with remotedesktop.</p>
+<p>The second part shows 5 sections:</p>
+<ul class="simple">
+<li><p>bootcmd: excuted early in the initialization process.</p></li>
+<li><p>apt_sources: The source of the packages for debian based distros.</p></li>
+<li><p>packages: excuted on the start.</p></li>
+<li><p>write_files: We create and set content of the following files.</p></li>
+<li><p>runcmd: List of string that will be executed near the end of the process.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="bootcmd">
+<h2>bootcmd:<a class="headerlink" href="#bootcmd" title="Permalink to this headline">¶</a></h2>
+<p>We set up the keys of the sources to be able to get the index of the packages.</p>
+</div>
+<div class="section" id="apt-sources">
+<h2>apt_sources:<a class="headerlink" href="#apt-sources" title="Permalink to this headline">¶</a></h2>
+<p>Then we add all the sources that will be necessary to locate the packages that we want to install.</p>
+<p>In this case we set the sources for:  ROS, Docker and some Google Toos such as logging, monitoring and remote-desktop.</p>
+</div>
+<div class="section" id="packages">
+<h2>packages:<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
+<p>The actual packages that we would install using <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span></code>. We include the packages included in the ROS Melodic <a class="reference external" href="http://wiki.ros.org/melodic/Installation/Ubuntu">installation</a>.</p>
+</div>
+<div class="section" id="write-files">
+<h2>write_files:<a class="headerlink" href="#write-files" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we set up the basic files for apt, remote-desktop and docker.</p>
+</div>
+<div class="section" id="runcmd">
+<h2>runcmd:<a class="headerlink" href="#runcmd" title="Permalink to this headline">¶</a></h2>
+<p>Finally the services are launch, PyCharm/Eclipse installed and ROS’ rosdep initialized.</p>
+<p>The only thing left,</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">chromoting.cloud-init</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#cloud-config</span>
+<span class="c1">#</span>
+<span class="c1"># go/desktop-vm</span>
+<span class="c1">#</span>
+<span class="c1"># Ubuntu 18.04 Bionic with xfce4 and useful stuff</span>
+<span class="c1">#</span>
+<span class="c1"># Usage:</span>
+<span class="c1">#</span>
+<span class="c1"># - Download this paste as a file named &quot;chromoting.cloud-init&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># - Create the VM</span>
+<span class="c1">#</span>
+<span class="c1">#  gcloud compute instances create \</span>
+<span class="c1">#    --image-family ubuntu-1804-lts \</span>
+<span class="c1">#    --image-project ubuntu-os-cloud \</span>
+<span class="c1">#    --machine-type n1-standard-32 \</span>
+<span class="c1">#    --boot-disk-size=200 \</span>
+<span class="c1">#    --boot-disk-type=pd-ssd \</span>
+<span class="c1">#    --metadata-from-file user-data=chromoting.cloud-init \</span>
+<span class="c1">#    desktop</span>
+<span class="c1">#</span>
+<span class="c1"># (You&#39;ll be prompted for the zone to use if you haven&#39;t set a default one)</span>
+<span class="c1">#</span>
+<span class="c1"># - Once the VM is created, wait for cloud-init to finish, with for example:</span>
+<span class="c1">#</span>
+<span class="c1">#  gcloud compute ssh desktop -- journalctl -f --identifier=cloud-init</span>
+<span class="c1">#</span>
+<span class="c1"># - The VM will reboot if needed by the OS updates</span>
+<span class="c1">#</span>
+<span class="c1"># - Open this link in your browser</span>
+<span class="c1">#</span>
+<span class="c1">#    http://goto.google.com/crd-auth</span>
+<span class="c1">#</span>
+<span class="c1"># - Select your account, accept the permissions, and run on the VM the command it will display, adding $(hostname -f) at the end</span>
+<span class="c1"># </span>
+<span class="c1"># - Use the Chrome Remote Desktop client to connect to the VM</span>
+<span class="c1">#</span>
+<span class="c1">#    https://remotedesktop.google.com</span>
+<span class="c1">#</span>
+<span class="c1"># - When prompted for the session manager, click on the only option:</span>
+<span class="c1">#</span>
+<span class="c1">#      &quot;Xfce Session: Use this session to run Xfce4 as your desktop environment&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># - You&#39;ll see a welcome dialog box the first time, select &quot;Use default config&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># Make sure you are connected over the cable and not wifi</span>
+<span class="nt">package_upgrade</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">bootcmd</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -qq - &gt;/dev/null</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -qq - &gt;/dev/null</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wget -q -O - https://download.docker.com/linux/ubuntu/gpg | apt-key add -qq - &gt;/dev/null</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -qq - &gt;/dev/null</span>  <span class="c1"># Visual Studio Code</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">curl -sSL &#39;http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654&#39; | apt-key add - &gt;/dev/null</span>
+
+<span class="nt">apt_sources</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://packages.cloud.google.com/apt</span><span class="nv"> </span><span class="s">google-cloud-logging-wheezy</span><span class="nv"> </span><span class="s">main&quot;</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://packages.cloud.google.com/apt</span><span class="nv"> </span><span class="s">google-cloud-monitoring-$RELEASE</span><span class="nv"> </span><span class="s">main&quot;</span>
+<span class="c1"># Docker</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">[arch=amd64]</span><span class="nv"> </span><span class="s">https://download.docker.com/linux/ubuntu</span><span class="nv"> </span><span class="s">$RELEASE</span><span class="nv"> </span><span class="s">edge&quot;</span>
+<span class="c1"># For kubectl and additional gcloud components</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://packages.cloud.google.com/apt</span><span class="nv"> </span><span class="s">cloud-sdk-$RELEASE</span><span class="nv"> </span><span class="s">main&quot;</span>
+<span class="c1"># We choose the filenames /etc/apt/sources.list.d/google-chrome.list and /etc/apt/sources.list.d/chrome-remote-desktop.list</span>
+<span class="c1"># This is because the &#39;chrome&#39; and &#39;chrome-remote-desktop&#39; packages manage the .list files themselves, they will overwrite them.</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://dl.google.com/linux/chrome/deb/</span><span class="nv"> </span><span class="s">stable</span><span class="nv"> </span><span class="s">main&quot;</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">google-chrome.list</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://dl.google.com/linux/chrome-remote-desktop/deb/</span><span class="nv"> </span><span class="s">stable</span><span class="nv"> </span><span class="s">main&quot;</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">chrome-remote-desktop.list</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;ppa:remmina-ppa-team/remmina-next&quot;</span>                            <span class="c1"># Remmina RDP client</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">https://packages.microsoft.com/repos/vscode</span><span class="nv"> </span><span class="s">stable</span><span class="nv"> </span><span class="s">main&quot;</span>  <span class="c1"># Visual Studio Code</span>
+<span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://packages.ros.org/ros/ubuntu</span><span class="nv"> </span><span class="s">bionic</span><span class="nv"> </span><span class="s">main&quot;</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros-latest.list</span>
+
+<span class="nt">packages</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-chrome-stable</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">chrome-remote-desktop</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">xfce4</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">thunar-archive-plugin</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">unzip</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">zip</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">default-jdk</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python-pip</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">build-essential</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tcpdump</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nmap</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">whois</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-app-engine-python</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-app-engine-python-extras</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-app-engine-java</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-app-engine-go</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-datalab</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-datastore-emulator</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-pubsub-emulator</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-cbt</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-cloud-build-local</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-cloud-sdk-bigtable-emulator</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-fluentd</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">google-fluentd-catch-all-config</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">stackdriver-agent</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">docker-ce</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">remmina</span>                             <span class="c1"># Remmina RDP client</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">remmina-plugin-rdp</span>                  <span class="c1"># Remmina RDP client</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">libfreerdp-plugins-standard</span>         <span class="c1"># Remmina RDP client</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gedit</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gedit-plugins</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">code</span>                                <span class="c1"># Visual Studio Code</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ros-melodic-desktop-full</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python-rosdep2</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python-rosinstall</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python-rosinstall-generator</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python-wstool</span>
+
+<span class="nt">write_files</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/apt/apt.conf.d/50unattended-upgrades</span> 
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">Unattended-Upgrade::Origins-Pattern {</span>
+            <span class="no">&quot;origin=*&quot;;</span>
+    <span class="no">};</span>
+<span class="c1"># The following adds the group docker group to users created by the accounts agent</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/default/instance_configs.cfg.template</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">[Accounts]</span>
+    <span class="no">groups = ubuntu,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lxd,docker</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/xdg/autostart/xscreensaver.desktop</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/update-motd.d/10-help-text</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/update-motd.d/50-motd-news</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/update-motd.d/50-landscape-sysinfo</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/update-motd.d/51-cloudguest</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/update-motd.d/80-livepatch</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no"># disabled</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/profile.d/chrome-remote-desktop.sh</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span> 
+    <span class="no">export CHROME_REMOTE_DESKTOP_DEFAULT_DESKTOP_SIZES=&quot;2560x1440&quot;</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/docker/daemon.json</span>
+  <span class="nt">content</span><span class="p">:</span> <span class="p p-Indicator">|</span> 
+    <span class="no">{</span>
+      <span class="no">&quot;registry-mirrors&quot;: [&quot;https://mirror.gcr.io&quot;]</span>
+    <span class="no">}</span>
+
+<span class="nt">runcmd</span><span class="p">:</span> 
+<span class="c1"># Restart google-accounts-daemon to apply the changes to the /etc/default/instance_configs.cfg.template</span>
+<span class="c1">#TODO this does not change the groups of the existing users</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">systemctl restart google-accounts-daemon.service</span>
+<span class="c1"># the google-fluentd-catch-all-config package does not reload google-fluentd during postinstall, workaround:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">systemctl restart google-fluentd.service</span>
+<span class="c1"># Install pyCharm</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">snap install pycharm-community --classic</span>
+<span class="c1"># Install Eclipse</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">snap install eclipse --classic</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rosdep init</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rosdep update</span>
+
+<span class="nt">package_reboot_if_required</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hacking-with-cloud-init">
+<h3>Hacking with cloud-init<a class="headerlink" href="#hacking-with-cloud-init" title="Permalink to this headline">¶</a></h3>
+<p>As we have seen this file is structured to easily see the most fundamental parts of the packages installed in a cloud instance. To modify the file, I strongly suggest using the logs of the <code class="docutils literal notranslate"><span class="pre">cloud-init</span></code> operation: <code class="docutils literal notranslate"><span class="pre">/var/log/cloud-init-output.log</span></code> and <code class="docutils literal notranslate"><span class="pre">/var/log/cloud-init.log</span></code>.</p>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -52,11 +316,11 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">ROS on GCP with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html#parts">PARTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html#code">CODE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">ROS on GCP</a></li>
 </ul>
 
 <div class="relations">
@@ -64,7 +328,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../index.html" title="previous chapter">Welcome to art roco’s documentation!</a></li>
-      <li>Next: <a href="index.html" title="next chapter">ROS on GCP</a></li>
+      <li>Next: <a href="index.html" title="next chapter">ROS on GCP with Docker</a></li>
   </ul></li>
 </ul>
 </div>

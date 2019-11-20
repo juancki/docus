@@ -1,0 +1,51 @@
+resources:
+# gcloud deployment-manager deployments create ros-instances --config=dply-ros.yaml
+- name: {{ properties['instanceName'] }}
+  type: compute.v1.instance
+  properties:
+    zone: {{ properties['zone'] }}
+    machineType: https://www.googleapis.com/compute/v1/projects/{{ env['project'] }}/zones/{{ properties['zone'] }}/machineTypes/{{ properties['machineType'] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        diskName: {{ properties['instanceName'] }}-disk
+        sourceImage: {{ properties['image'] }}
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/{{ env['project'] }}/global/networks/default
+      {% if properties['hasExternalIp'] %}
+      accessConfigs:
+      - name: external-nat
+        type: ONE_TO_ONE_NAT
+      {% endif %}
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt update
+          sudo apt install -y \
+            tmux \
+            vim
+          sudo apt-get install -y \
+            apt-transport-https \
+            ca-certificates \
+            curl \
+            gnupg2 \
+            software-properties-common
+          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+          sudo apt-key fingerprint 0EBFCD88
+          sudo add-apt-repository \
+             "deb [arch=amd64] https://download.docker.com/linux/debian \
+             $(lsb_release -cs) \
+             stable"
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+          apt-cache madison docker-ce
+          VS=$(apt-cache madison docker-ce | grep debian | head -n 1 | awk -F ' ' '{print $3}') # latest version
+          sudo apt-get install -y docker-ce=$VS docker-ce-cli=$VS containerd.io
+          sudo docker pull ros
+          Uss=$(sudo users)
+          sudo usermod -aG docker $Uss

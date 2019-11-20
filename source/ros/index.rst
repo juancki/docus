@@ -1,6 +1,6 @@
-==========
-ROS on GCP
-==========
+======================
+ROS on GCP with Docker
+======================
 
 Google anouced during 2018 a Cloud Robotics Platform (The Robot Report_) that will help compute and process online and offline data. Cloud robotics provide access to:
 
@@ -26,27 +26,15 @@ Docker enviroment to manage ROS instances
 
 This tutorial set ups a Google Compute Engine (GCE) instance to be connected to ROS in a custom Virtual Private Cloud (VPC) network.
 
-The following yaml file.
+The following yaml file:
 
-.. literalinclude:: config.yaml
+.. literalinclude:: dply-ros.yaml
   :language: yaml
-  :emphasize-lines: 1
-  :linenos:
+
+.. literalinclude:: dply-ros.jinja
+  :language: jinja
 
 .. figure:: ./SvgFileService.svg
   :name: image's name
-
-
-Glossary
---------
-
-.. glossary::
-
-  - Docker: Containerization tool
-  - GCE: Virtual Machines.
-  - VPC: Equivalent of VPN on the cloud.
-
-
-
 
 

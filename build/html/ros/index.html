@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ROS on GCP &#8212; art rocò  documentation</title>
+    <title>ROS on GCP with Docker &#8212; art rocò  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="OpenCV on GCP" href="../opencv/index.html" />
-    <link rel="prev" title="Ubuntu 16.04 LTS on GCP for ROS" href="full.html" />
+    <link rel="prev" title="Ubuntu 18.04 LTS on GCP for ROS with GUI" href="full.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -32,8 +32,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="ros-on-gcp">
-<h1>ROS on GCP<a class="headerlink" href="#ros-on-gcp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="ros-on-gcp-with-docker">
+<h1>ROS on GCP with Docker<a class="headerlink" href="#ros-on-gcp-with-docker" title="Permalink to this headline">¶</a></h1>
 <p>Google anouced during 2018 a Cloud Robotics Platform (The Robot <a class="reference external" href="https://therobotreport.com/google-cloud-robotics-platform/">Report</a>) that will help compute and process online and offline data. Cloud robotics provide access to:</p>
 <ul class="simple">
 <li><p>Parallel computing of hundreds of machines on the cloud.</p></li>
@@ -42,61 +42,79 @@
 </ul>
 <p>AWS’ <a class="reference external" href="https://aws.amazon.com/es/robomaker/">AutoMaker</a> already makes possible to deploy Robotic Operating System (ROS) nodes on the cloud with access to developing tools such as speach recognition, simulation environments and premade demo applications ready to modify and addapt to the custom app of the developer.</p>
 <p>However, as October 2019 Google Cloud Platform does not provide a solution to robotic systems on the cloud.</p>
-<div class="toctree-wrapper compound">
-</div>
 <div class="section" id="docker-enviroment-to-manage-ros-instances">
 <h2>Docker enviroment to manage ROS instances<a class="headerlink" href="#docker-enviroment-to-manage-ros-instances" title="Permalink to this headline">¶</a></h2>
 <p>This tutorial set ups a Google Compute Engine (GCE) instance to be connected to ROS in a custom Virtual Private Cloud (VPC) network.</p>
-<p>The following yaml file.</p>
-<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll"><span class="nt">imports</span><span class="p">:</span>
-</span><span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path/to/template.jinja</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-template</span>
-<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path/to/another/template.py</span>
+<p>The following yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">imports</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dply-ros.jinja</span>
 
 <span class="nt">resources</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NAME_OF_RESOURCE</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TYPE_OF_RESOURCE</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-instance-pool</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dply-ros.jinja</span>
     <span class="nt">properties</span><span class="p">:</span>
-      <span class="nt">property-a</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
-      <span class="nt">property-b</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="nt">property-z</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NAME_OF_RESOURCE</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TYPE_OF_RESOURCE</span>
-    <span class="nt">properties</span><span class="p">:</span>
-      <span class="nt">property-a</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
-      <span class="nt">property-b</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
-      <span class="l l-Scalar l-Scalar-Plain">...</span>
-      <span class="nt">property-z</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
+      <span class="nt">zone</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">europe-west3-c</span>
+      <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-9</span>
+      <span class="nt">machineType</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">n1-standard-2</span>
+      <span class="nt">instanceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros</span>
+      <span class="nt">hasExternalIp</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
-</td></tr></table></div>
+</div>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">resources:</span>
+<span class="x"># gcloud deployment-manager deployments create ros-instances --config=dply-ros.yaml</span>
+<span class="x">- name: </span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;instanceName&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">  type: compute.v1.instance</span>
+<span class="x">  properties:</span>
+<span class="x">    zone: </span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;zone&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    machineType: https://www.googleapis.com/compute/v1/projects/</span><span class="cp">{{</span> <span class="nv">env</span><span class="o">[</span><span class="s1">&#39;project&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x">/zones/</span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;zone&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x">/machineTypes/</span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;machineType&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    disks:</span>
+<span class="x">    - deviceName: boot</span>
+<span class="x">      type: PERSISTENT</span>
+<span class="x">      boot: true</span>
+<span class="x">      autoDelete: true</span>
+<span class="x">      initializeParams:</span>
+<span class="x">        diskName: </span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;instanceName&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x">-disk</span>
+<span class="x">        sourceImage: </span><span class="cp">{{</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;image&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    networkInterfaces:</span>
+<span class="x">    - network: https://www.googleapis.com/compute/v1/projects/</span><span class="cp">{{</span> <span class="nv">env</span><span class="o">[</span><span class="s1">&#39;project&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="x">/global/networks/default</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">properties</span><span class="o">[</span><span class="s1">&#39;hasExternalIp&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">      accessConfigs:</span>
+<span class="x">      - name: external-nat</span>
+<span class="x">        type: ONE_TO_ONE_NAT</span>
+<span class="x">      </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    metadata:</span>
+<span class="x">      items:</span>
+<span class="x">      - key: startup-script</span>
+<span class="x">        value: |</span>
+<span class="x">          #!/bin/bash</span>
+<span class="x">          sudo apt update</span>
+<span class="x">          sudo apt install -y \</span>
+<span class="x">            tmux \</span>
+<span class="x">            vim</span>
+<span class="x">          sudo apt-get install -y \</span>
+<span class="x">            apt-transport-https \</span>
+<span class="x">            ca-certificates \</span>
+<span class="x">            curl \</span>
+<span class="x">            gnupg2 \</span>
+<span class="x">            software-properties-common</span>
+<span class="x">          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -</span>
+<span class="x">          sudo apt-key fingerprint 0EBFCD88</span>
+<span class="x">          sudo add-apt-repository \</span>
+<span class="x">             &quot;deb [arch=amd64] https://download.docker.com/linux/debian \</span>
+<span class="x">             $(lsb_release -cs) \</span>
+<span class="x">             stable&quot;</span>
+<span class="x">          sudo apt-get update</span>
+<span class="x">          sudo apt-get install -y docker-ce docker-ce-cli containerd.io</span>
+<span class="x">          apt-cache madison docker-ce</span>
+<span class="x">          VS=$(apt-cache madison docker-ce | grep debian | head -n 1 | awk -F &#39; &#39; &#39;{print $3}&#39;) # latest version</span>
+<span class="x">          sudo apt-get install -y docker-ce=$VS docker-ce-cli=$VS containerd.io</span>
+<span class="x">          sudo docker pull ros</span>
+<span class="x">          Uss=$(sudo users)</span>
+<span class="x">          sudo usermod -aG docker $Uss</span>
+</pre></div>
+</div>
 <div class="figure align-default" id="image-s-name">
 <img alt="../_images/SvgFileService.svg" src="../_images/SvgFileService.svg" /></div>
-</div>
-<div class="section" id="glossary">
-<h2>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h2>
-<dl class="glossary simple">
-<dt id="term-docker-containerization-tool">- Docker: Containerization tool</dt><dt id="term-gce-virtual-machines">- GCE: Virtual Machines.</dt><dt id="term-vpc-equivalent-of-vpn-on-the-cloud">- VPC: Equivalent of VPN on the cloud.</dt><dd></dd>
-</dl>
 </div>
 </div>
 
@@ -119,21 +137,17 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html#parts">PARTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html#code">CODE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ROS on GCP with Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ROS on GCP</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="full.html">Ubuntu 16.04 LTS on GCP for ROS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="full.html" title="previous chapter">Ubuntu 16.04 LTS on GCP for ROS</a></li>
+      <li>Previous: <a href="full.html" title="previous chapter">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
       <li>Next: <a href="../opencv/index.html" title="next chapter">OpenCV on GCP</a></li>
   </ul></li>
 </ul>
