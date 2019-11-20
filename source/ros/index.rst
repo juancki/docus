@@ -20,9 +20,6 @@ However, as October 2019 Google Cloud Platform does not provide a solution to ro
 
 
 
-.. toctree::
-   :maxdepth: 5
-   :caption: Contents:
 
 Docker enviroment to manage ROS instances
 =========================================
@@ -41,7 +38,7 @@ The following yaml file.
 
 
 Glossary
-========
+--------
 
 .. glossary::
 

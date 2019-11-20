@@ -28,4 +28,8 @@ Timer/Counter
 -----------
 The TC0/1 in the Leonardo are more powerful than the Arduino UNO however we can adapt the values for the interruptions to....
 
+- TCCR
+- OCRXA
+- TIMSK
+
 
