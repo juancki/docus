@@ -1,0 +1,165 @@
+#cloud-config
+#
+# go/desktop-vm
+#
+# Ubuntu 18.04 Bionic with xfce4 and useful stuff
+#
+# Usage:
+#
+# - Download this paste as a file named "chromoting.cloud-init"
+#
+# - Create the VM
+#
+#  gcloud compute instances create \
+#    --image-family ubuntu-1804-lts \
+#    --image-project ubuntu-os-cloud \
+#    --machine-type n1-standard-32 \
+#    --boot-disk-size=200 \
+#    --boot-disk-type=pd-ssd \
+#    --metadata-from-file user-data=chromoting.cloud-init \
+#    desktop
+#
+# (You'll be prompted for the zone to use if you haven't set a default one)
+#
+# - Once the VM is created, wait for cloud-init to finish, with for example:
+#
+#  gcloud compute ssh desktop -- journalctl -f --identifier=cloud-init
+#
+# - The VM will reboot if needed by the OS updates
+#
+# - Open this link in your browser
+#
+#    http://goto.google.com/crd-auth
+#
+# - Select your account, accept the permissions, and run on the VM the command it will display, adding $(hostname -f) at the end
+# 
+# - Use the Chrome Remote Desktop client to connect to the VM
+#
+#    https://remotedesktop.google.com
+#
+# - When prompted for the session manager, click on the only option:
+#
+#      "Xfce Session: Use this session to run Xfce4 as your desktop environment"
+#
+# - You'll see a welcome dialog box the first time, select "Use default config"
+#
+# Make sure you are connected over the cable and not wifi
+package_upgrade: true
+
+bootcmd:
+- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -qq - >/dev/null
+- wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -qq - >/dev/null
+- wget -q -O - https://download.docker.com/linux/ubuntu/gpg | apt-key add -qq - >/dev/null
+- wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -qq - >/dev/null  # Visual Studio Code
+- curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add - >/dev/null
+
+apt_sources:
+- source: "deb http://packages.cloud.google.com/apt google-cloud-logging-wheezy main"
+- source: "deb http://packages.cloud.google.com/apt google-cloud-monitoring-$RELEASE main"
+# Docker
+- source: "deb [arch=amd64] https://download.docker.com/linux/ubuntu $RELEASE edge"
+# For kubectl and additional gcloud components
+- source: "deb http://packages.cloud.google.com/apt cloud-sdk-$RELEASE main"
+# We choose the filenames /etc/apt/sources.list.d/google-chrome.list and /etc/apt/sources.list.d/chrome-remote-desktop.list
+# This is because the 'chrome' and 'chrome-remote-desktop' packages manage the .list files themselves, they will overwrite them.
+- source: "deb http://dl.google.com/linux/chrome/deb/ stable main"
+  filename: google-chrome.list
+- source: "deb http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main"
+  filename: chrome-remote-desktop.list
+- source: "ppa:remmina-ppa-team/remmina-next"                            # Remmina RDP client
+- source: "deb https://packages.microsoft.com/repos/vscode stable main"  # Visual Studio Code
+- source: "deb http://packages.ros.org/ros/ubuntu bionic main"
+  filename: ros-latest.list
+
+packages:
+  - google-chrome-stable
+  - chrome-remote-desktop
+  - xfce4
+  - thunar-archive-plugin
+  - unzip
+  - git
+  - zip
+  - default-jdk
+  - python-pip
+  - build-essential
+  - tcpdump
+  - nmap
+  - whois
+  - google-cloud-sdk-app-engine-python
+  - google-cloud-sdk-app-engine-python-extras
+  - google-cloud-sdk-app-engine-java
+  - google-cloud-sdk-app-engine-go
+  - google-cloud-sdk-datalab
+  - google-cloud-sdk-datastore-emulator
+  - google-cloud-sdk-pubsub-emulator
+  - google-cloud-sdk-cbt
+  - google-cloud-sdk-cloud-build-local
+  - google-cloud-sdk-bigtable-emulator
+  - google-fluentd
+  - google-fluentd-catch-all-config
+  - stackdriver-agent
+  - docker-ce
+  - remmina                             # Remmina RDP client
+  - remmina-plugin-rdp                  # Remmina RDP client
+  - libfreerdp-plugins-standard         # Remmina RDP client
+  - gedit
+  - gedit-plugins
+  - code                                # Visual Studio Code
+  - ros-melodic-desktop-full
+  - python-rosdep2
+  - python-rosinstall
+  - python-rosinstall-generator
+  - python-wstool
+
+write_files:
+- path: /etc/apt/apt.conf.d/50unattended-upgrades 
+  content: |
+    Unattended-Upgrade::Origins-Pattern {
+            "origin=*";
+    };
+# The following adds the group docker group to users created by the accounts agent
+- path: /etc/default/instance_configs.cfg.template
+  content: |
+    [Accounts]
+    groups = ubuntu,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lxd,docker
+- path: /etc/xdg/autostart/xscreensaver.desktop
+  content: |
+    # disabled
+- path: /etc/update-motd.d/10-help-text
+  content: |
+    # disabled
+- path: /etc/update-motd.d/50-motd-news
+  content: |
+    # disabled
+- path: /etc/update-motd.d/50-landscape-sysinfo
+  content: |
+    # disabled
+- path: /etc/update-motd.d/51-cloudguest
+  content: |
+    # disabled
+- path: /etc/update-motd.d/80-livepatch
+  content: |
+    # disabled
+- path: /etc/profile.d/chrome-remote-desktop.sh
+  content: | 
+    export CHROME_REMOTE_DESKTOP_DEFAULT_DESKTOP_SIZES="2560x1440"
+- path: /etc/docker/daemon.json
+  content: | 
+    {
+      "registry-mirrors": ["https://mirror.gcr.io"]
+    }
+
+runcmd: 
+# Restart google-accounts-daemon to apply the changes to the /etc/default/instance_configs.cfg.template
+#TODO this does not change the groups of the existing users
+- systemctl restart google-accounts-daemon.service
+# the google-fluentd-catch-all-config package does not reload google-fluentd during postinstall, workaround:
+- systemctl restart google-fluentd.service
+# Install pyCharm
+- snap install pycharm-community --classic
+# Install Eclipse
+- snap install eclipse --classic
+- rosdep init
+- rosdep update
+
+package_reboot_if_required: true
