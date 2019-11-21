@@ -12,8 +12,10 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Knapsack and Travel Salesman Combined Problem" href="../problems/knapsack-travelsman.html" />
     <link rel="prev" title="OpenCV on GCP" href="../opencv/index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -33,33 +35,192 @@
             
   <div class="section" id="self-balancing-robots-with-the-pieces-of-a-cnc">
 <h1>Self-balancing robots with the pieces of a CNC<a class="headerlink" href="#self-balancing-robots-with-the-pieces-of-a-cnc" title="Permalink to this headline">¶</a></h1>
-<p>3D printing machines are already ubiquitious. We will see how to resuse the parts of your CNC to make a self-balancing robot.</p>
+<p>3D printing machines are already ubiquitious. We will see how to resuse the motor parts of your CNC to make a self-balancing robot.</p>
 <div class="section" id="parts">
 <h2>PARTS<a class="headerlink" href="#parts" title="Permalink to this headline">¶</a></h2>
-<p>The parts that I have gathered are the following:</p>
+<p>The parts that I have gathered from a old 3D machine are the following:</p>
 <ul class="simple">
 <li><p>1 Arduino</p></li>
-<li><p>1 driver shield for Arduino</p></li>
-<li><p>2 Stepper motors Nema 15.</p></li>
+<li><p>1 CNC driver shield for Arduino</p></li>
+<li><p>2 Stepper motors Nema 15</p></li>
 </ul>
 <p>Additionally you will need:</p>
 <ul class="simple">
 <li><p>2 Wheels</p></li>
-<li><p>Gyro/.</p></li>
+<li><p>LiPo battery.</p></li>
+<li><p>Gyro</p></li>
 </ul>
 </div>
-<div class="section" id="code">
-<h2>CODE<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
-<p>The code is extracted from the Brobots evo that uses similar hardware.
-In order to make use of the code with an Arduino UNO some registers have to be changed.</p>
+<div class="section" id="control">
+<h2>CONTROL<a class="headerlink" href="#control" title="Permalink to this headline">¶</a></h2>
+<p>Each stepper motor is controlled with the frequency of impulses (square signals) that are sent to the motor driver.
+The way to calculate exactly which frequency is necessary to self-balance is done with discrete control techniques.</p>
+<p>The <a class="reference external" href="https://www.jjrobots.com/projects-2/b-robot/">control design</a> of the self balancing robot is similar to the inverted pendulum plus velocity control. The control is linear with two PID controllers in cascade.</p>
+<p>The speed of the device is controlled with a PI controller which adjust the desired tilt angle <span class="math notranslate nohighlight">\(\hat \theta\)</span> in function of the desired speed <span class="math notranslate nohighlight">\(\hat v\)</span> and the robot speed <span class="math notranslate nohighlight">\(v_r\)</span>.</p>
+<p>The second controller is a PD control for stability which output is integrated. The inputs are  <span class="math notranslate nohighlight">\(\hat \theta\)</span> and the actual titl angle <span class="math notranslate nohighlight">\(\theta\)</span></p>
+<p>The steering is done throught standard differential steering.</p>
+</div>
+<div class="section" id="hardware">
+<h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h2>
+<p>This project is based on the B-robot from JJrobots that uses similar hardware.
+Then, it makes sense to highlight the differences and similitudes:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>We will use Arduino UNO and they use Arduino Leonardo.</dt><dd><ul>
+<li><p>Which have different MCU ATmega328P and ATmega32u4 respectively.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Even though we could print all the parts, to make it more different we will not use gears. The wheels will be directly attached to the motor shaft.</p></li>
+<li><p>Instead of using the jjRobots <cite>Brain Shield</cite> we are going to use an standard 3D printing control board.</p></li>
+<li><p>The stepper motor controller that we will use are the same.</p></li>
+<li><p>Same IMU (gyro+accelerometers).</p></li>
+<li><p>I have a 12V LiPo battery from a DIY plane and I will be using that but you can use the 6x AA batteries.</p></li>
+</ul>
+</div>
+<div class="section" id="software">
+<h2>Software<a class="headerlink" href="#software" title="Permalink to this headline">¶</a></h2>
+<p>The code I used is hosted in <a class="reference external" href="https://github.com/juancki/MySelfBalancing">github</a>.</p>
+<p>The ATMega328P(UNO) and ATMega32U4(Leonardo) are both in the AVR family and have 32K of flash memory. They differ in package and what peripherals are offered. From our point of view the <strong>biggest difference between those two microcontrollers is the internal Timer/Counters (TC)</strong> that are used for send the corresponding impulses to the stepper motor controllers. If you want to use the chip for a USB keyboard, the ATMega32U4, or any of the other USB equipped devices in the AVR family is a better choice.</p>
+<ul class="simple">
+<li><p>(UNO) Two 8-bit TCs with Separate Prescaler and Compare Mode. One 16-bit TC with Separate Prescaler, Compare Mode.</p></li>
+<li><p>(Leonardo) One 8-bit TC with Separate Prescaler and Compare Mode. Two 16-bit TCs with Separate Prescaler, Compare. And an extra 10-bit High-Speed TC.</p></li>
+</ul>
 <div class="section" id="timer-counter">
 <h3>Timer/Counter<a class="headerlink" href="#timer-counter" title="Permalink to this headline">¶</a></h3>
 <p>The TC0/1 in the Leonardo are more powerful than the Arduino UNO however we can adapt the values for the interruptions to….</p>
-<ul class="simple">
-<li><p>TCCR</p></li>
-<li><p>OCRXA</p></li>
-<li><p>TIMSK</p></li>
-</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Motor M1</p></th>
+<th class="head"><p>ATMega328P</p></th>
+<th class="head"><p>ATMega32U4</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="10"><p>Board</p>
+<p>Timer/Counter</p>
+<p>Mode</p>
+<p>#bits</p>
+<p>pre scalers</p>
+<p>Ouput PORT</p>
+<p>Ouput PIN</p>
+<p>Max Fq (Hz)</p>
+<p>Min Fq (Hz)</p>
+<p>Docs Page</p>
+</td>
+<td rowspan="10"><p>Arduino UNO</p>
+<p>TC1</p>
+<p>Interrupt on Match</p>
+<p>16</p>
+<p>1,8,64,256,1024</p>
+<p>PORTD, PD3</p>
+<p>PIN 3</p>
+<p>0</p>
+<p>0</p>
+<p>89</p>
+</td>
+<td rowspan="10"><p>Arduino Leonardo</p>
+<p>TC1</p>
+<p>Interrupt on Match</p>
+<p>16</p>
+<p>1,8,64,256,1024</p>
+<p>PORTD, PD6</p>
+<p>PIN</p>
+<p>0</p>
+<p>0</p>
+<p>99</p>
+</td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Motor M2</p></th>
+<th class="head"><p>ATMega328P</p></th>
+<th class="head"><p>ATMega32U4</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="9"><p>Board</p>
+<p>Timer/Counter</p>
+<p>Mode</p>
+<p>#bits</p>
+<p>pre scalers</p>
+<p>Ouput PORT</p>
+<p>Ouput PIN</p>
+<p>Max Fq (Hz)</p>
+<p>Min Fq (Hz)</p>
+</td>
+<td rowspan="9"><p>Arduino UNO</p>
+<p>TC0</p>
+<p>Interrupt on Match</p>
+<p><strong>8</strong></p>
+<p>1,8,64,256,1024</p>
+<p>PORTD, PD3</p>
+<p>PIN 3</p>
+<p>0</p>
+<p>0</p>
+</td>
+<td rowspan="9"><p>Arduino Leonardo</p>
+<p>TC3</p>
+<p>Interrupt on Match</p>
+<p>16</p>
+<p>1,8,64,256,1024</p>
+<p>PORTD, PD6</p>
+<p>PIN</p>
+<p>0</p>
+<p>0</p>
+</td>
+</tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"></tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td><p>Docs Page</p></td>
+<td><p>74</p></td>
+<td><p>99</p></td>
+</tr>
+</tbody>
+</table>
+<p>Frequency function.
+.. :math:</p>
+<blockquote>
+<div><p>f_{16bits} = frac{f_{clk}}{2N(1+OCRnA}</p>
+</div></blockquote>
+<p>Where N is the prescaler and OCRnA is the value at which the internal counter will trigger the interruption. OCRnA has the same number of bits as the TC. So, the TC0 used in M2 has half the bits than the others.</p>
+<div class="section" id="previous-implementation">
+<h4>Previous implementation<a class="headerlink" href="#previous-implementation" title="Permalink to this headline">¶</a></h4>
+<p>The two 16-bit TCs are
+In order to make use of the code with an Arduino UNO some registers have to be changed.</p>
+</div>
+<div class="section" id="my-implementation">
+<h4>My implementation<a class="headerlink" href="#my-implementation" title="Permalink to this headline">¶</a></h4>
+<p>I removed the Communication/Network files as I did not have the pieces to use them. I set the references velocity to 0.</p>
+</div>
 </div>
 </div>
 </div>
@@ -83,14 +244,11 @@ In order to make use of the code with an Arduino UNO some registers have to be c
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 16.04 LTS on GCP for ROS with GUI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Self-balancing robots with the pieces of a CNC</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#parts">PARTS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#code">CODE</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Self-balancing robots with the pieces of a CNC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problems/knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem</a></li>
 </ul>
 
 <div class="relations">
@@ -98,6 +256,7 @@ In order to make use of the code with an Arduino UNO some registers have to be c
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../opencv/index.html" title="previous chapter">OpenCV on GCP</a></li>
+      <li>Next: <a href="../problems/knapsack-travelsman.html" title="next chapter">Knapsack and Travel Salesman Combined Problem</a></li>
   </ul></li>
 </ul>
 </div>
