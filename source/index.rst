@@ -14,6 +14,8 @@ Welcome to art roco's documentation!
    ros/*
    opencv/*
    arduino/*
+   problems/*
+  
  
 
 
