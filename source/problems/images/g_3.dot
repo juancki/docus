@@ -1,0 +1,16 @@
+graph g {
+ splines=false;
+node[shape =record,height=.1];
+O [label = "O",style="filled"];
+
+a0[label = "A",color=green4];
+b0[label = "B",color=red4];
+c0[label = "C",color=blue3];
+O -- a0[weight=4];
+O -- b0[constraint = false];
+O -- c0[weight=8];
+a0 -- b0 [weight=38];
+a0 -- c0 [weight=4];
+c0 -- b0 [weight=4];
+
+}

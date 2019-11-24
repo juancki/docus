@@ -1,0 +1,30 @@
+digraph g {
+node[shape =record,height=.1];
+O [label = "O",style="filled"];
+o1[label = "O",style="filled"];
+o2[label = "O",style=filled];
+o3[label = "O",style=filled];
+o4[label = "O",style=filled];
+o5[label = "O",style=filled];
+o6[label = "O",style=filled];
+
+a0[label = "A",color=green4];
+a1[label = "A",color=green4];
+a3[label = "A",color=green4];
+b0[label = "B",color=red4];
+b1[label = "B",color=red4];
+b3[label = "B",color=red4];
+O -> a0;
+O -> b0;
+a0 -> "o1";
+a0 -> "b1";
+b0 -> "o2";
+b0 -> "a1";
+"a1" -> "o4";
+"b1" -> "o3";
+"o1" -> "b3";
+"o2" -> "a3";
+"a3" -> "o5";
+"b3" -> "o6";
+
+}

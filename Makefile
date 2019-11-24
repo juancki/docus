@@ -14,6 +14,13 @@ help:
 
 .PHONY: help Makefile
 
+generate_figures:
+	for f in $$(find . -iname *.dot); do \
+	     f_dir=$$(dirname $$f); \
+	     f_name=$$(basename $$f); \
+	     f_name="$${f_name%.*}";\
+	     dot -Tsvg $$f -o $$f_dir/$$f_name.svg; \
+	done;
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile

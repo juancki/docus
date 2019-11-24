@@ -1,0 +1,8 @@
+digraph B {
+node[shape =record,height=.1];
+	A -> B;
+	O -> B;
+	B -> C;
+	C -> A;
+}
+	
