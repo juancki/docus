@@ -1,11 +1,12 @@
-
 ================================================
 Knapsack and Travel Salesman Combined Problem II
 ================================================
 
 Breath First (recursive solution)
 ---------------------------------
-This a first recursive solution to the optimization problem.
+This a first recursive solution to the optimization problem. We are going to do a breath first search on the decision tree.
+
+The algorithm keeps track of all the branches at the same time with a Priority Queue (PQ) based on the total distance. At any time, the branch with least cost is the one being analyzed. From that branch, possible transitions are obtained and added to queue with their respective cost.
 
 At any given time, the state of a wanna-be solution can be described with the following variables:
 
