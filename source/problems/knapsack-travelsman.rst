@@ -7,11 +7,11 @@ This problem comes out of simply adding the restrictions of two of the most famo
 
 Knapsack problem
 ................
+The statement of this problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break. 
+Then, the objective is to decide which items select and which leave in order to **maximize** the value of the things that we can put inside of our knapsack.
 
-There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break.
-The problem is stated as which items do we select in orde to maximize the value of the things that we can put inside of our knapsack.
-
-The number of items to carry is not bounded, only the weight it can support. The first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.
+The number of items to carry is not bounded, only the weight it can support.
+One first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.
 
 The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Said with more technical words the problem is NP-hard, it can not be solved in polynomial time.
 
