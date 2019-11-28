@@ -106,3 +106,5 @@ OPTIMUM
 -------
 The code as expressed above does not accomplish the optimum, but it almost does.
 In order to obtain the optimum, the algorithm has to check if the branches pop'ed from the PQ have greater traveled distance than the solutions found. When this happens, the solution is to get the least from the already obtained solutions.
+
+

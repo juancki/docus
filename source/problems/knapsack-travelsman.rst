@@ -86,3 +86,37 @@ To finish this article, we will explose the total number of possible solutions t
 
 The factorial of N, :math:`N!`, represents all the possible order of picking elements without going throug the Origin.
 The exponential part, :math:`2^{N-1}`, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin or not up to :math:`N-1` times.
+
+
+Example
+-------
+
+.. code-block:: python
+
+        # Distance matrix
+        [[0.         9.75354174 4.87325056]
+         [9.75354174 0.         5.07073511]
+         [4.87325056 5.07073511 0.        ]]
+        [
+        # Weight and position
+        A = Ew(E(weight=3),P(x=1.4943,y=1.6344)),
+        B = Ew(E(weight=1),P(x=-7.4938,y=-2.1532)),
+        C = Ew(E(weight=3),P(x=-3.2830,y=0.6719))]
+
+======= ===================
+COST    PATH        
+======= ===================
+20.6478 O->B->C->O->A->O
+20.6478 O->C->B->O->A->O
+20.6478 O->A->O->B->C->O
+20.6478 O->A->O->C->B->O
+26.4671 O->A->B->O->C->O
+26.4671 O->B->A->O->C->O
+26.4671 O->C->O->A->B->O
+26.4671 O->C->O->B->A->O
+26.7251 O->A->O->B->O->C->O
+26.7251 O->A->O->C->O->B->O
+26.7251 O->B->O->A->O->C->O
+26.7251 O->B->O->C->O->A->O
+26.7251 O->C->O->A->O->B->O
+26.7251 O->C->O->B->O->A->O
