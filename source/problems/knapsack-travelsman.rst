@@ -1,6 +1,6 @@
-=============================================
-Knapsack and Travel Salesman Combined Problem
-=============================================
+===============================================
+Knapsack and Travel Salesman Combined Problem I
+===============================================
 
 This problem comes out of simply adding the restrictions of two of the most famous optimization problems: Knapsack problem and the Travel Salesman problem.
 
@@ -103,20 +103,22 @@ Example
         B = Ew(E(weight=1),P(x=-7.4938,y=-2.1532)),
         C = Ew(E(weight=3),P(x=-3.2830,y=0.6719))]
 
-======= ===================
-COST    PATH        
-======= ===================
-20.6478 O->B->C->O->A->O
-20.6478 O->C->B->O->A->O
-20.6478 O->A->O->B->C->O
-20.6478 O->A->O->C->B->O
-26.4671 O->A->B->O->C->O
-26.4671 O->B->A->O->C->O
-26.4671 O->C->O->A->B->O
-26.4671 O->C->O->B->A->O
-26.7251 O->A->O->B->O->C->O
-26.7251 O->A->O->C->O->B->O
-26.7251 O->B->O->A->O->C->O
-26.7251 O->B->O->C->O->A->O
-26.7251 O->C->O->A->O->B->O
-26.7251 O->C->O->B->O->A->O
+        
+=======  ===================
+COST     PATH        
+=======  ===================
+20.6478  O->B->C->O->A->O   
+20.6478  O->C->B->O->A->O   
+20.6478  O->A->O->B->C->O   
+20.6478  O->A->O->C->B->O   
+26.4671  O->A->B->O->C->O   
+26.4671  O->B->A->O->C->O   
+26.4671  O->C->O->A->B->O   
+26.4671  O->C->O->B->A->O   
+26.7251  O->A->O->B->O->C->O
+26.7251  O->A->O->C->O->B->O
+26.7251  O->B->O->A->O->C->O
+26.7251  O->B->O->C->O->A->O
+26.7251  O->C->O->A->O->B->O
+26.7251  O->C->O->B->O->A->O
+=======  ===================

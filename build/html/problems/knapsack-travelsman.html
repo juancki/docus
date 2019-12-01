@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Knapsack and Travel Salesman Combined Problem &#8212; art rocò  documentation</title>
+    <title>Knapsack and Travel Salesman Combined Problem I &#8212; art rocò  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,6 +15,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Knapsack and Travel Salesman Combined Problem II" href="knapsack-travelsman-1.html" />
     <link rel="prev" title="Self-balancing robots with the pieces of a CNC" href="../arduino/index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -32,14 +33,15 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="knapsack-and-travel-salesman-combined-problem">
-<h1>Knapsack and Travel Salesman Combined Problem<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="knapsack-and-travel-salesman-combined-problem-i">
+<h1>Knapsack and Travel Salesman Combined Problem I<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-i" title="Permalink to this headline">¶</a></h1>
 <p>This problem comes out of simply adding the restrictions of two of the most famous optimization problems: Knapsack problem and the Travel Salesman problem.</p>
 <div class="section" id="knapsack-problem">
 <h2>Knapsack problem<a class="headerlink" href="#knapsack-problem" title="Permalink to this headline">¶</a></h2>
-<p>There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break.
-The problem is stated as which items do we select in orde to maximize the value of the things that we can put inside of our knapsack.</p>
-<p>The number of items to carry is not bounded, only the weight it can support. The first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.</p>
+<p>The statement of this problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break.
+Then, the objective is to decide which items select and which leave in order to <strong>maximize</strong> the value of the things that we can put inside of our knapsack.</p>
+<p>The number of items to carry is not bounded, only the weight it can support.
+One first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.</p>
 <p>The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Said with more technical words the problem is NP-hard, it can not be solved in polynomial time.</p>
 </div>
 <div class="section" id="travel-salesman-problem">
@@ -120,6 +122,75 @@ The problem is stated as which items do we select in orde to maximize the value 
 <p>The factorial of N, <span class="math notranslate nohighlight">\(N!\)</span>, represents all the possible order of picking elements without going throug the Origin.
 The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</span>, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin or not up to <span class="math notranslate nohighlight">\(N-1\)</span> times.</p>
 </div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Distance matrix</span>
+<span class="p">[[</span><span class="mf">0.</span>         <span class="mf">9.75354174</span> <span class="mf">4.87325056</span><span class="p">]</span>
+ <span class="p">[</span><span class="mf">9.75354174</span> <span class="mf">0.</span>         <span class="mf">5.07073511</span><span class="p">]</span>
+ <span class="p">[</span><span class="mf">4.87325056</span> <span class="mf">5.07073511</span> <span class="mf">0.</span>        <span class="p">]]</span>
+<span class="p">[</span>
+<span class="c1"># Weight and position</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">Ew</span><span class="p">(</span><span class="n">E</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.4943</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">1.6344</span><span class="p">)),</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">Ew</span><span class="p">(</span><span class="n">E</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mf">7.4938</span><span class="p">,</span><span class="n">y</span><span class="o">=-</span><span class="mf">2.1532</span><span class="p">)),</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Ew</span><span class="p">(</span><span class="n">E</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mf">3.2830</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">0.6719</span><span class="p">))]</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>COST</p></th>
+<th class="head"><p>PATH</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>20.6478</p></td>
+<td><p>O-&gt;B-&gt;C-&gt;O-&gt;A-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.6478</p></td>
+<td><p>O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>20.6478</p></td>
+<td><p>O-&gt;A-&gt;O-&gt;B-&gt;C-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.6478</p></td>
+<td><p>O-&gt;A-&gt;O-&gt;C-&gt;B-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>26.4671</p></td>
+<td><p>O-&gt;A-&gt;B-&gt;O-&gt;C-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.4671</p></td>
+<td><p>O-&gt;B-&gt;A-&gt;O-&gt;C-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>26.4671</p></td>
+<td><p>O-&gt;C-&gt;O-&gt;A-&gt;B-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.4671</p></td>
+<td><p>O-&gt;C-&gt;O-&gt;B-&gt;A-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>26.7251</p></td>
+<td><p>O-&gt;A-&gt;O-&gt;B-&gt;O-&gt;C-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.7251</p></td>
+<td><p>O-&gt;A-&gt;O-&gt;C-&gt;O-&gt;B-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>26.7251</p></td>
+<td><p>O-&gt;B-&gt;O-&gt;A-&gt;O-&gt;C-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.7251</p></td>
+<td><p>O-&gt;B-&gt;O-&gt;C-&gt;O-&gt;A-&gt;O</p></td>
+</tr>
+<tr class="row-even"><td><p>26.7251</p></td>
+<td><p>O-&gt;C-&gt;O-&gt;A-&gt;O-&gt;B-&gt;O</p></td>
+</tr>
+<tr class="row-odd"><td><p>26.7251</p></td>
+<td><p>O-&gt;C-&gt;O-&gt;B-&gt;O-&gt;A-&gt;O</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 
@@ -146,7 +217,10 @@ The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</sp
 <li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">Knapsack and Travel Salesman Combined Problem II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">Knapsack and Travel Salesman Combined Problem III</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
 </ul>
 
 <div class="relations">
@@ -154,6 +228,7 @@ The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</sp
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../arduino/index.html" title="previous chapter">Self-balancing robots with the pieces of a CNC</a></li>
+      <li>Next: <a href="knapsack-travelsman-1.html" title="next chapter">Knapsack and Travel Salesman Combined Problem II</a></li>
   </ul></li>
 </ul>
 </div>

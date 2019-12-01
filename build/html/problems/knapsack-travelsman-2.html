@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Knapsack and Travel Salesman Combined Problem III &#8212; art rocò  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Knapsack and Travel Salesman Combined Problem IV" href="knapsack-travelsman-3.html" />
+    <link rel="prev" title="Knapsack and Travel Salesman Combined Problem II" href="knapsack-travelsman-1.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="knapsack-and-travel-salesman-combined-problem-iii">
+<h1>Knapsack and Travel Salesman Combined Problem III<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-iii" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="heuristic-solution-recursive-solution">
+<h2>HEURISTIC SOLUTION (recursive solution)<a class="headerlink" href="#heuristic-solution-recursive-solution" title="Permalink to this headline">¶</a></h2>
+<p>This suboptimal solution serves as a test on the effects in the order of computations to better understand the computational burden of this project.
+This is a better recursive solution to find a suboptimal solution to this problem problem that takes into account the structure of the problem when searching for solutions.</p>
+<p>In the previous case with Breath First (BF), when the optimal solution has distance <span class="math notranslate nohighlight">\(D\)</span> it is required that every branch in the Priority Queue (PQ) has at least cost <span class="math notranslate nohighlight">\(D\)</span>. This is the major disadvantage of BF for the resolution of this problem because the number of branches increases exponentially in the very first interectactions.</p>
+<p>In order to avoid having to compute all branches at the same pace, we need the algorithm to diferentiate between good and bad. This is where the heuristics brights. However, the heuristic function has to be defined and is not reusable from problem to problem.</p>
+<p>In this case, the heuristic function is a reinterpretation of the optimization problem. Due to the fact that the total number elements to pick up is the same, the ratio distance to #elements will be minimized when the distance is minimized at the end.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">heuristics</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">path_distance</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">path_distance</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Where the <code class="docutils literal notranslate"><span class="pre">path</span></code> is the list of elements visited without the times that the picker has passed to Origin. And the <code class="docutils literal notranslate"><span class="pre">path_distance</span></code> is the distance traveled.</p>
+<p>Similarly to the BF solution, this heuristic approximation keeps track of the branches with a Priority Queue (PQ), in this case, on the heuristics function. Then, when a branch is pop’ed from the PQ is the one that has traveled the least distance to #elements ratio. From that branch, all possible transitions are obtained and added to queue with their respective heuristics.</p>
+<p>The constraints are also included as in the BF solution. The main change is the order at wich the braches are pop’ed from the PQ.</p>
+</div>
+<div class="section" id="optimum">
+<h2>OPTIMUM<a class="headerlink" href="#optimum" title="Permalink to this headline">¶</a></h2>
+<p>The code as expressed above does not accomplish the optimum, but rather a suboptimum that is the path that has the best ratio distance to nodes until N-1.</p>
+<p>Unfortunately for this approach, it is necessary to finish all the paths to guarantee that a solution is the best.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">art rocò</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">Knapsack and Travel Salesman Combined Problem II</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem III</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="knapsack-travelsman-1.html" title="previous chapter">Knapsack and Travel Salesman Combined Problem II</a></li>
+      <li>Next: <a href="knapsack-travelsman-3.html" title="next chapter">Knapsack and Travel Salesman Combined Problem IV</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Juan Carlos Gomez (juancarlosgomezpomar@).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/problems/knapsack-travelsman-2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

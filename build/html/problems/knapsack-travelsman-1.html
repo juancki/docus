@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Knapsack and Travel Salesman Combined Problem II &#8212; art rocò  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Knapsack and Travel Salesman Combined Problem III" href="knapsack-travelsman-2.html" />
+    <link rel="prev" title="Knapsack and Travel Salesman Combined Problem" href="knapsack-travelsman.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="knapsack-and-travel-salesman-combined-problem-ii">
+<h1>Knapsack and Travel Salesman Combined Problem II<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-ii" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="breath-first-recursive-solution">
+<h2>Breath First (recursive solution)<a class="headerlink" href="#breath-first-recursive-solution" title="Permalink to this headline">¶</a></h2>
+<p>This a first recursive solution to the optimization problem. With Breath First we are going search find the solution in the decision tree.</p>
+<p>The algorithm keeps track of all the branches at the same time with a Priority Queue (PQ) based on the total distance. At any time, the branch with least traveled distance is pop’ed from the PQ and is analyzed. From that branch, all possible transitions are obtained and added to queue with their respective cost.</p>
+<p>At any given time, the state of a wanna-be solution can be described with the following variables:</p>
+<ul class="simple">
+<li><p>Current location <span class="math notranslate nohighlight">\(L\)</span>.</p></li>
+<li><p>Distance traveled <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
+<li><p>Current weight in the knapsack <span class="math notranslate nohighlight">\(w\)</span>.</p></li>
+<li><p>To-do list, list of items that have to be picked-up <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</ul>
+<p>The PQ is initialized with the top of tree which is the Origin.
+Then, the Breath First will keep on searching (<code class="docutils literal notranslate"><span class="pre">add_to_tree</span></code>)until the a solution is found.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>   <span class="c1"># incomplete paths</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="o">=</span> <span class="p">[]</span>              <span class="c1"># complete paths</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">tree</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+        <span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_tree</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-to-tree-and-base-case">
+<h2><code class="docutils literal notranslate"><span class="pre">add_to_tree</span></code> and  Base Case<a class="headerlink" href="#add-to-tree-and-base-case" title="Permalink to this headline">¶</a></h2>
+<p>The locations that have been passed by in any given branch is the list of parent nodes of the tree from the current node to the top.
+The possible transitions from there are those that have not been visited and also, allowed by the capacity constraint.</p>
+<p>We arrive to the base case when the picker has no more places to visit and is on the Origin. In that case, solution will be reported to the main loop where, if desired, and the search will be finished.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">parent</span>
+    <span class="n">not_accessible</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">not_accessible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">element</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span>
+
+    <span class="n">t_zero_weight</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">elements</span> <span class="k">if</span> <span class="n">q</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">not_accessible</span><span class="p">]</span>
+
+    <span class="c1"># Posible transitions to other locations</span>
+    <span class="n">t_possible</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">t_zero_weight</span> <span class="k">if</span> <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">el</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ks</span><span class="o">.</span><span class="n">max_weight</span><span class="p">]</span>
+
+    <span class="c1"># BASE CASE</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_transitions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">e</span><span class="o">.</span><span class="n">element</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">O</span> <span class="p">:</span>
+        <span class="n">not_accessible</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_solution_to_paths</span><span class="p">(</span><span class="n">not_accessible</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;solution found&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recursive-case">
+<h2>Recursive Case<a class="headerlink" href="#recursive-case" title="Permalink to this headline">¶</a></h2>
+<p>If the picker has more places to go or it is not on the Origin, the search has to continue.</p>
+<p>Two transition cases are separated: 1) From any location to an item and 2) From an item to the Origin.</p>
+<ol class="arabic">
+<li><p>From any location to an item.</p>
+<blockquote>
+<div><p>The elements that are achivable from the current place, <code class="docutils literal notranslate"><span class="pre">t_possible</span></code> have to be added to the PQ with the status:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">new_d</span></code> is the distance traveled until <code class="docutils literal notranslate"><span class="pre">e</span></code> plus the distance from there to each possible transtion.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_w</span></code> is the cumulative weight in the knapsack once the picker arrives to each possible transition.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>  is the node from the decision tree whose parent is <code class="docutils literal notranslate"><span class="pre">e</span></code> and represent the transition from <code class="docutils literal notranslate"><span class="pre">e</span></code> to <code class="docutils literal notranslate"><span class="pre">t</span></code> in that branch.</p></li>
+<li><p>The information about the to-do list and the traveled is inherent in the tree <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>From an item to the Origin.</p>
+<blockquote>
+<div><p>In this case, the picker can go to the Origin if is not in the Origin. The new added cases to the PQ will have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">new_w</span></code> is simply zero, because the picker unpacks the knapsack on the Origin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_d</span></code>, calculated in the same way as before, is the distance traveled until <code class="docutils literal notranslate"><span class="pre">e</span></code> plus the distance to the Origin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code>  is the node from the decision tree whose parent is <code class="docutils literal notranslate"><span class="pre">e</span></code> and represent the transition from <code class="docutils literal notranslate"><span class="pre">e</span></code> to <code class="docutils literal notranslate"><span class="pre">t</span></code> in this case the Origin.</p></li>
+<li><p>The information about the to-do list and the traveled is inherent in the tree <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># RECURSIVE CASE</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_possible</span><span class="p">:</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Added to the tree</span>
+    <span class="n">new_d</span> <span class="o">=</span> <span class="n">d</span><span class="o">+</span><span class="n">World</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">new_w</span> <span class="o">=</span> <span class="n">w</span><span class="o">+</span><span class="n">t</span><span class="o">.</span><span class="n">el</span><span class="o">.</span><span class="n">w</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">new_d</span><span class="p">,</span><span class="n">new_w</span><span class="p">),</span><span class="n">new_d</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">O</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">O</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Added to the tree</span>
+    <span class="n">new_d</span> <span class="o">=</span> <span class="n">d</span><span class="o">+</span><span class="n">World</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">new_w</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">new_d</span><span class="p">,</span><span class="n">new_w</span><span class="p">),</span><span class="n">new_d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="optimum">
+<h2>OPTIMUM<a class="headerlink" href="#optimum" title="Permalink to this headline">¶</a></h2>
+<p>The code as expressed above does not accomplish the optimum, but it almost does.
+In order to obtain the optimum, the algorithm has to check if the branches pop’ed from the PQ have greater traveled distance than the solutions found. When this happens, the solution is to get the least from the already obtained solutions.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">art rocò</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">Knapsack and Travel Salesman Combined Problem III</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="knapsack-travelsman.html" title="previous chapter">Knapsack and Travel Salesman Combined Problem</a></li>
+      <li>Next: <a href="knapsack-travelsman-2.html" title="next chapter">Knapsack and Travel Salesman Combined Problem III</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Juan Carlos Gomez (juancarlosgomezpomar@).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/problems/knapsack-travelsman-1.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
