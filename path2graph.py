@@ -68,27 +68,48 @@ def line2graph(line):
     # Using `O` as the Origin
     subpaths = path.split('O')
     sp_counter = 0
+
+    ''' n90[label = "O",style=filled];
+        n91[label = "O",style=filled];
+        n92[label = "O",style=filled];'''
+    initOs = 'n0[label = "0"]\n'
+    clusters = ''
+    connections = ''
     for sp in subpaths:
         if len(sp) != 0:
-            subgraph = subpath2subgraph(sp_counter,sp)
-
+            subgraph,first,last = subpath2subgraph(sp_counter,sp)
+            clusters += subgraph
+            
             sp_counter +=1
+            initOs += 'n{}[label = "0"];\n'.format(sp_counter)
+            connections += 'n{} -> {};\n{} -> n{}\n;'.format(sp_counter-1,first,last,sp_counter)
+
+    return 'digraph G {\n' + initOs + clusters + connections + '\n}\n'
+
         
     
-def subpath2subgraph(subpath):
+def subpath2subgraph(index,subpath):
     elements = subpath.split('->')
     elements = elements[1:-1]
-    print('\t',elements)
+    basic = '''
+        subgraph cluster_{} {{
+                style=filled;
+                color=lightgrey;
+                node [style=filled,color=white];
+                {};
+                label = "process #1";
+        }}\n'''.format(index,' -> '.join(elements))
+    return basic,elements[0],elements[-1]
 
 
 
 while input_file.readable():
-    line = input_file.readline()
+    line = input_file.readline().strip()
     if len(line) == 0:
         break
-    print('Analyzing :',line)
-    line2graph(line.strip())
-    output_file.write(line)
+    # print('Analyzing :',line)
+    graph = line2graph(line)
+    output_file.write(graph)
 
 
 
