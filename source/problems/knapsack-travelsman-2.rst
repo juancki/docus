@@ -30,3 +30,17 @@ OPTIMUM
 The code as expressed above does not accomplish the optimum, but rather a suboptimum that is the path that has the best ratio distance to nodes until N-1.
 
 Unfortunately for this approach, it is necessary to finish all the paths to guarantee that a solution is the best.
+
+A* Algorithm
+------------
+
+Conditions on the heuristic function for A*....
+
+
+.. code-block:: python
+
+        def pq_index(path_distance,not_accessed):
+                heuristic = len(not_accessed)
+                cost = path_distance
+                return cost + heuristic
+
