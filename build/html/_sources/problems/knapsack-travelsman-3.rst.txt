@@ -45,6 +45,21 @@ COST     PATH
 26.7251  O->C->O->B->O->A->O
 =======  ===================
 
+.. image:: images/basic/basic.svg
+.. image:: images/basic/basic1.svg
+.. image:: images/basic/basic2.svg
+.. image:: images/basic/basic3.svg
+.. image:: images/basic/basic4.svg
+.. image:: images/basic/basic5.svg
+.. image:: images/basic/basic6.svg
+.. image:: images/basic/basic7.svg
+.. image:: images/basic/basic8.svg
+.. image:: images/basic/basic9.svg
+.. image:: images/basic/basic10.svg
+.. image:: images/basic/basic11.svg
+.. image:: images/basic/basic12.svg
+.. image:: images/basic/basic13.svg
+.. image:: images/basic/basic14.svg
 
 Inter-Subpath permutation
 -------------------------

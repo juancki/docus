@@ -1,0 +1,25 @@
+digraph G {
+node[shape=record];
+rankdir="LR"n0[label = "O",style=filled]
+n1[label = "O",style=filled];
+n2[label = "O",style=filled];
+
+        subgraph cluster_0 {
+                style=filled;
+                color="#94e2c6";
+                node [style=filled,color=white];
+                B -> A;
+        }
+
+        subgraph cluster_1 {
+                style=filled;
+                color="#4d2e24";
+                node [style=filled,color=white];
+                C;
+        }
+n0 -> B;
+A -> n1;
+n1 -> C;
+C -> n2;
+
+}

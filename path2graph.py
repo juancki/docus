@@ -1,10 +1,9 @@
 #!/usr/bin/python3.6
-
 #################################################
 # filename: path2graph.py
 # Author: Juan Carlos Gomez (jcki)
 # Creation date : 01-12-2019
-# Last modification date: 01-12-2019
+# Last modification date: 02-12-2019
 #################################################
 
 
@@ -33,34 +32,13 @@ args = parser.parse_args()
 input_file = args.input
 output_file = args.output
 
-a = ''' 
-digraph G {
 
-	subgraph cluster_0 {
-		style=filled;
-		color=lightgrey;
-		node [style=filled,color=white];
-		a0 -> a1 -> a2 -> a3;
-		label = "process #1";
-	}
+def getColor(path):
+    h = hash(path)
+    hx = hex(h)
+    return hx[-6:]
 
-	subgraph cluster_1 {
-		node [style=filled];
-		b0 -> b1 -> b2 -> b3;
-		label = "process #2";
-		color=blue
-	}
-	start -> a0;
-	start -> b0;
-	a1 -> b3;
-	b2 -> a3;
-	a3 -> a0;
-	a3 -> end;
-	b3 -> end;
 
-	start [shape=Mdiamond];
-	end [shape=Msquare];
-}'''
 
 def line2graph(line):
     cost = float(line.split(' ')[0])
@@ -72,7 +50,7 @@ def line2graph(line):
     ''' n90[label = "O",style=filled];
         n91[label = "O",style=filled];
         n92[label = "O",style=filled];'''
-    initOs = 'n0[label = "0"]\n'
+    initOs = 'n0[label = "O",style=filled]\n'
     clusters = ''
     connections = ''
     for sp in subpaths:
@@ -81,10 +59,11 @@ def line2graph(line):
             clusters += subgraph
             
             sp_counter +=1
-            initOs += 'n{}[label = "0"];\n'.format(sp_counter)
-            connections += 'n{} -> {};\n{} -> n{}\n;'.format(sp_counter-1,first,last,sp_counter)
+            initOs += 'n{}[label = "O",style=filled];\n'.format(sp_counter)
+            connections += 'n{} -> {};\n{} -> n{};\n'.format(sp_counter-1,first,last,sp_counter)
 
-    return 'digraph G {\n' + initOs + clusters + connections + '\n}\n'
+    header = 'digraph G {\nnode[shape=record];\nrankdir="LR"' 
+    return header + initOs + clusters + connections + '\n}\n'
 
         
     
@@ -92,17 +71,19 @@ def subpath2subgraph(index,subpath):
     elements = subpath.split('->')
     elements = elements[1:-1]
     basic = '''
-        subgraph cluster_{} {{
+        subgraph cluster_{0} {{
                 style=filled;
-                color=lightgrey;
+                color="#{2}";
                 node [style=filled,color=white];
-                {};
-                label = "process #1";
-        }}\n'''.format(index,' -> '.join(elements))
+                {1};
+        }}\n'''.format(index,' -> '.join(elements),getColor(subpath))
     return basic,elements[0],elements[-1]
 
 
 
+ind = output_file.name.rfind('.')
+original_name = output_file.name[:ind]
+files = 0
 while input_file.readable():
     line = input_file.readline().strip()
     if len(line) == 0:
@@ -110,6 +91,10 @@ while input_file.readable():
     # print('Analyzing :',line)
     graph = line2graph(line)
     output_file.write(graph)
+    files += 1
+    args = parser.parse_args(('-o',original_name+str(files)+'.dot'))
+    output_file = args.output
+
 
 
 
