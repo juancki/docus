@@ -67,39 +67,39 @@ Where :math:`Q` is the number of subpaths, s, in the path, p, with two or more e
         C = Ew(E(weight=3),P(x=-3.2830,y=0.6719))]
 
         
-=======  ===================
-COST     PATH        
-=======  ===================
-20.6478  O->B->C->O->A->O   
-20.6478  O->C->B->O->A->O   
-20.6478  O->A->O->B->C->O   
-20.6478  O->A->O->C->B->O   
-26.4671  O->A->B->O->C->O   
-26.4671  O->B->A->O->C->O   
-26.4671  O->C->O->A->B->O   
-26.4671  O->C->O->B->A->O   
-26.7251  O->A->O->B->O->C->O
-26.7251  O->A->O->C->O->B->O
-26.7251  O->B->O->A->O->C->O
-26.7251  O->B->O->C->O->A->O
-26.7251  O->C->O->A->O->B->O
-26.7251  O->C->O->B->O->A->O
-=======  ===================
+===  =======  ===============
+ n   COST     PATH        
+===  =======  ===============
+ 0   20.6478  |0| 
+ 1   20.6478  |1| 
+ 2   20.6478  |2| 
+ 3   20.6478  |3| 
+ 4   26.4671  |4| 
+ 5   26.4671  |5| 
+ 6   26.4671  |6| 
+ 7   26.4671  |7| 
+ 8   26.7251  |8| 
+ 9   26.7251  |9| 
+ 10  26.7251  |10|
+ 11  26.7251  |11|
+ 12  26.7251  |12|
+ 13  26.7251  |13|
+===  =======  ===============
 
-.. image:: images/basic/basic.svg
-.. image:: images/basic/basic1.svg
-.. image:: images/basic/basic2.svg
-.. image:: images/basic/basic3.svg
-.. image:: images/basic/basic4.svg
-.. image:: images/basic/basic5.svg
-.. image:: images/basic/basic6.svg
-.. image:: images/basic/basic7.svg
-.. image:: images/basic/basic8.svg
-.. image:: images/basic/basic9.svg
-.. image:: images/basic/basic10.svg
-.. image:: images/basic/basic11.svg
-.. image:: images/basic/basic12.svg
-.. image:: images/basic/basic13.svg
+.. |0| image:: images/basic/basic.svg
+.. |1| image:: images/basic/basic1.svg
+.. |2| image:: images/basic/basic2.svg
+.. |3| image:: images/basic/basic3.svg
+.. |4| image:: images/basic/basic4.svg
+.. |5| image:: images/basic/basic5.svg
+.. |6| image:: images/basic/basic6.svg
+.. |7| image:: images/basic/basic7.svg
+.. |8| image:: images/basic/basic8.svg
+.. |9| image:: images/basic/basic9.svg
+.. |10| image:: images/basic/basic10.svg
+.. |11| image:: images/basic/basic11.svg
+.. |12| image:: images/basic/basic12.svg
+.. |13| image:: images/basic/basic13.svg
 
 
 Solutions

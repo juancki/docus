@@ -34,15 +34,35 @@
             
   <div class="section" id="knapsack-and-travel-salesman-combined-problem-iv">
 <h1>Knapsack and Travel Salesman Combined Problem IV<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-iv" title="Permalink to this headline">¶</a></h1>
-<p>Until now, we have presented the problem, a way to find an optimum solution using Breath First and a suboptimal solution with a heuristic function.
+<p>Until now, we have presented the problem, a way to find an optimum solution using Breath First (BF) and a suboptimal solution with a heuristic function.
 In this article we are going to focus on the combinations and permutations of the solutions to this problem.</p>
 <ul class="simple">
 <li><p>Intra-subpath permuation</p></li>
 <li><p>Inter-subpath permuation</p></li>
 </ul>
-<div class="section" id="intra-subpath-permutation">
-<h2>Intra-Subpath permutation<a class="headerlink" href="#intra-subpath-permutation" title="Permalink to this headline">¶</a></h2>
-<p>First off we are going to define the <strong>subpath</strong>. A subpath is any combination of picked elements between consecutive passes through the Origin. The special part about a subpath is that it always starts and ends at the Origin with the knapsack emtpy.</p>
+<p>These two properties of the problem subject to discussion affect dramatically to the time to find the solution. This is because multiple paths can have the same exact cost and the first two algorithms: BF and a Heuristics version have to explore all the permutations of multiple candidate solutions to get to the end of any of them.</p>
+<p>Once we know what properties do to all the problems we can start simplifying the search for the optimal solution avoiding the permutations.</p>
+<div class="section" id="inter-subpath-permutation">
+<h2>Inter-Subpath permutation<a class="headerlink" href="#inter-subpath-permutation" title="Permalink to this headline">¶</a></h2>
+<p>First off we are going to define the <strong>subpath</strong>. A subpath, <span class="math notranslate nohighlight">\(s\)</span>, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, <span class="math notranslate nohighlight">\(p\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</span></code>, has two subpahts: <span class="math notranslate nohighlight">\(s_1\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code> and <span class="math notranslate nohighlight">\(s_2\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;A-&gt;O</span></code>.</p>
+<p>So, if we consider the particular solution to the The cost of the solution will be:</p>
+<div class="math notranslate nohighlight">
+\[cost(p) = \sum_i cost(s_i) = s_1 + s_2\]</div>
+<p>The cost operation is conmutative respect the subpaths present in the path. So, the solution <span class="math notranslate nohighlight">\(s_1 \rightarrow s_2\)</span> is equivalent to <span class="math notranslate nohighlight">\(s_2 \rightarrow s_1\)</span> which leaves the total cost the same.</p>
+<p>With this in mind, we can calculate the number of optimal solution to our problem with the inter-path permutations.</p>
+<div class="math notranslate nohighlight">
+\[permutations_{inter} = |S(p)|!\]</div>
+<p>Where <span class="math notranslate nohighlight">\(S(p)\)</span> denotes the set of subpaths in the path <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(| |\)</span> the number of elements in the set and <code class="docutils literal notranslate"><span class="pre">!</span></code> the factorial.</p>
+<p>For complex scenarios that require mutiple passes through the Origin, the total number of equivalent solutions increases with the factorial of that number.</p>
+<p>Particularely, this is noticeable for the paths that go to the Origin after each element. There are <span class="math notranslate nohighlight">\(N!\)</span> cases of the worst possible path.</p>
+</div>
+<div class="section" id="id1">
+<h2>Inter-Subpath permutation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>This other property, is present in each subpath. It affects the ordering in which the elements are travesed in the subpath. That is, that for the previous case with the subpath <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code>: there is the counterpart <code class="docutils literal notranslate"><span class="pre">O-&gt;B-&gt;C-&gt;O</span></code>. By changing the order to right to left, it has same elements and cost.</p>
+<p>So, for any subpath with two or more elements, there are two inter-subpath permutations.</p>
+<div class="math notranslate nohighlight">
+\[permutations_{intra} = 2^Q, Q = |{s \in S(p) | |s|\geq 2}|\]</div>
+<p>Where <span class="math notranslate nohighlight">\(Q\)</span> is the number of subpaths, s, in the path, p, with two or more elements. Then, the number of solutions with exactly the same cost to any increases exponentially with the number of subpaths with two or more elements.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Distance matrix</span>
 <span class="p">[[</span><span class="mf">0.</span>         <span class="mf">9.75354174</span> <span class="mf">4.87325056</span><span class="p">]</span>
  <span class="p">[</span><span class="mf">9.75354174</span> <span class="mf">0.</span>         <span class="mf">5.07073511</span><span class="p">]</span>
@@ -56,63 +76,89 @@ In this article we are going to focus on the combinations and permutations of th
 </div>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 27%" />
-<col style="width: 73%" />
+<col style="width: 12%" />
+<col style="width: 28%" />
+<col style="width: 60%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>COST</p></th>
+<tr class="row-odd"><th class="head"><p>n</p></th>
+<th class="head"><p>COST</p></th>
 <th class="head"><p>PATH</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>20.6478</p></td>
-<td><p>O-&gt;B-&gt;C-&gt;O-&gt;A-&gt;O</p></td>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>20.6478</p></td>
+<td><p><img alt="0" src="../_images/basic.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>20.6478</p></td>
-<td><p>O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</p></td>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>20.6478</p></td>
+<td><p><img alt="1" src="../_images/basic1.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>20.6478</p></td>
-<td><p>O-&gt;A-&gt;O-&gt;B-&gt;C-&gt;O</p></td>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>20.6478</p></td>
+<td><p><img alt="2" src="../_images/basic2.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>20.6478</p></td>
-<td><p>O-&gt;A-&gt;O-&gt;C-&gt;B-&gt;O</p></td>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>20.6478</p></td>
+<td><p><img alt="3" src="../_images/basic3.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>26.4671</p></td>
-<td><p>O-&gt;A-&gt;B-&gt;O-&gt;C-&gt;O</p></td>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>26.4671</p></td>
+<td><p><img alt="4" src="../_images/basic4.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>26.4671</p></td>
-<td><p>O-&gt;B-&gt;A-&gt;O-&gt;C-&gt;O</p></td>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>26.4671</p></td>
+<td><p><img alt="5" src="../_images/basic5.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>26.4671</p></td>
-<td><p>O-&gt;C-&gt;O-&gt;A-&gt;B-&gt;O</p></td>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>26.4671</p></td>
+<td><p><img alt="6" src="../_images/basic6.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>26.4671</p></td>
-<td><p>O-&gt;C-&gt;O-&gt;B-&gt;A-&gt;O</p></td>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>26.4671</p></td>
+<td><p><img alt="7" src="../_images/basic7.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>26.7251</p></td>
-<td><p>O-&gt;A-&gt;O-&gt;B-&gt;O-&gt;C-&gt;O</p></td>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="8" src="../_images/basic8.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>26.7251</p></td>
-<td><p>O-&gt;A-&gt;O-&gt;C-&gt;O-&gt;B-&gt;O</p></td>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="9" src="../_images/basic9.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>26.7251</p></td>
-<td><p>O-&gt;B-&gt;O-&gt;A-&gt;O-&gt;C-&gt;O</p></td>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="10" src="../_images/basic10.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>26.7251</p></td>
-<td><p>O-&gt;B-&gt;O-&gt;C-&gt;O-&gt;A-&gt;O</p></td>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="11" src="../_images/basic11.svg" /></p></td>
 </tr>
-<tr class="row-even"><td><p>26.7251</p></td>
-<td><p>O-&gt;C-&gt;O-&gt;A-&gt;O-&gt;B-&gt;O</p></td>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="12" src="../_images/basic12.svg" /></p></td>
 </tr>
-<tr class="row-odd"><td><p>26.7251</p></td>
-<td><p>O-&gt;C-&gt;O-&gt;B-&gt;O-&gt;A-&gt;O</p></td>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>26.7251</p></td>
+<td><p><img alt="13" src="../_images/basic13.svg" /></p></td>
 </tr>
 </tbody>
 </table>
-<img alt="../_images/basic.svg" src="../_images/basic.svg" /><img alt="../_images/basic1.svg" src="../_images/basic1.svg" /><img alt="../_images/basic2.svg" src="../_images/basic2.svg" /><img alt="../_images/basic3.svg" src="../_images/basic3.svg" /><img alt="../_images/basic4.svg" src="../_images/basic4.svg" /><img alt="../_images/basic5.svg" src="../_images/basic5.svg" /><img alt="../_images/basic6.svg" src="../_images/basic6.svg" /><img alt="../_images/basic7.svg" src="../_images/basic7.svg" /><img alt="../_images/basic8.svg" src="../_images/basic8.svg" /><img alt="../_images/basic9.svg" src="../_images/basic9.svg" /><img alt="../_images/basic10.svg" src="../_images/basic10.svg" /><img alt="../_images/basic11.svg" src="../_images/basic11.svg" /><img alt="../_images/basic12.svg" src="../_images/basic12.svg" /><img alt="../_images/basic13.svg" src="../_images/basic13.svg" /><img alt="problems/images/basic/basic14.svg" src="problems/images/basic/basic14.svg" /></div>
-<div class="section" id="inter-subpath-permutation">
-<h2>Inter-Subpath permutation<a class="headerlink" href="#inter-subpath-permutation" title="Permalink to this headline">¶</a></h2>
-<p>Moreover, the subpath in any path are conmutable as the total traveled distance is not modified.</p>
+<div class="section" id="solutions">
+<h3>Solutions<a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="s1-maxmin-reducing-the-candidates">
+<h4>S1 - MAXmin - Reducing the candidates<a class="headerlink" href="#s1-maxmin-reducing-the-candidates" title="Permalink to this headline">¶</a></h4>
+<p>At any given time, each candidate solution will arrive to the Origin, and from there it will have visited some elements and the rest are in the TODO list.</p>
+<p>The knapsack will bound the possible combinations of elements in the TODO list. For instance, the element with higher weight in TODO <span class="math notranslate nohighlight">\(max(T)\)</span> and the element with least weight in TODO <span class="math notranslate nohighlight">\(min(T)\)</span> could add up to be greater than the capacity <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(max(T) + min(T) &gt; C\)</span>. The element with greater weight will be required to be visited alone as the knapsack does not have enough capacity to take other element from the TODO list. So, the best solution for the algorithm is to compute the travel and add <span class="math notranslate nohighlight">\(max(T)\)</span> to the visted list. The minimum and maximum operations can be done fast with the help of structures such as: sorted lists, heaps and binary search trees.</p>
+<p>With this simple solution, the Inter-Subpaths are reduced drastically. If this taken each time, in each subpath that has high weight elements without low weight elements will be calculated faster without affecting the optimality of the solution.</p>
+</div>
+<div class="section" id="s2-not-repeating-the-permutations">
+<h4>S2 - Not repeating the permutations<a class="headerlink" href="#s2-not-repeating-the-permutations" title="Permalink to this headline">¶</a></h4>
+<p>We will go for the ordered list of combinations without the origin and will analize each list to find the maximum number of elements that can be taken without passing through the Origin.</p>
+</div>
+</div>
 </div>
 </div>
 
