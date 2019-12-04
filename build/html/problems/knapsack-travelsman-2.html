@@ -35,8 +35,9 @@
             
   <div class="section" id="knapsack-and-travel-salesman-combined-problem-iii">
 <h1>Knapsack and Travel Salesman Combined Problem III<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-iii" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="heuristic-solution-recursive-solution">
-<h2>HEURISTIC SOLUTION (recursive solution)<a class="headerlink" href="#heuristic-solution-recursive-solution" title="Permalink to this headline">¶</a></h2>
+<p>We will first approach to the solution with an heuristic solution and then, we will see the A* implementation.</p>
+<div class="section" id="suboptimal-heuristic-solution">
+<h2>Suboptimal Heuristic Solution<a class="headerlink" href="#suboptimal-heuristic-solution" title="Permalink to this headline">¶</a></h2>
 <p>This suboptimal solution serves as a test on the effects in the order of computations to better understand the computational burden of this project.
 This is a better recursive solution to find a suboptimal solution to this problem problem that takes into account the structure of the problem when searching for solutions.</p>
 <p>In the previous case with Breath First (BF), when the optimal solution has distance <span class="math notranslate nohighlight">\(D\)</span> it is required that every branch in the Priority Queue (PQ) has at least cost <span class="math notranslate nohighlight">\(D\)</span>. This is the major disadvantage of BF for the resolution of this problem because the number of branches increases exponentially in the very first interectactions.</p>
@@ -49,11 +50,30 @@ This is a better recursive solution to find a suboptimal solution to this proble
 <p>Where the <code class="docutils literal notranslate"><span class="pre">path</span></code> is the list of elements visited without the times that the picker has passed to Origin. And the <code class="docutils literal notranslate"><span class="pre">path_distance</span></code> is the distance traveled.</p>
 <p>Similarly to the BF solution, this heuristic approximation keeps track of the branches with a Priority Queue (PQ), in this case, on the heuristics function. Then, when a branch is pop’ed from the PQ is the one that has traveled the least distance to #elements ratio. From that branch, all possible transitions are obtained and added to queue with their respective heuristics.</p>
 <p>The constraints are also included as in the BF solution. The main change is the order at wich the braches are pop’ed from the PQ.</p>
-</div>
 <div class="section" id="optimum">
-<h2>OPTIMUM<a class="headerlink" href="#optimum" title="Permalink to this headline">¶</a></h2>
+<h3>OPTIMUM<a class="headerlink" href="#optimum" title="Permalink to this headline">¶</a></h3>
 <p>The code as expressed above does not accomplish the optimum, but rather a suboptimum that is the path that has the best ratio distance to nodes until N-1.</p>
 <p>Unfortunately for this approach, it is necessary to finish all the paths to guarantee that a solution is the best.</p>
+</div>
+</div>
+<div class="section" id="a-algorithm">
+<h2>A* Algorithm<a class="headerlink" href="#a-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>A* is designed for shortest path finding algorithms. A* is also similar to BF and the one presented in the previous subsection. A* also uses a PQ and takes into account the size of the knapsack in the same way BF does. The important thing about the A* is that it guarantees the optimial solution for the shortes path and configurability find the solution quickly.</p>
+<p>A* has a cost function composed of both, the actual euclidian cost, <span class="math notranslate nohighlight">\(g\)</span>, and a virtual cost of an heuristic function, <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Conditions on the heuristic <span class="math notranslate nohighlight">\(h(state)\)</span> function for A* are the following:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h\)</span> Gives a sense of the direction to search in the solution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(h(state) \geq 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(h(goal) = 0\)</span> .</p></li>
+</ul>
+<p>In this case, I propose to use the number of elements left to visit, TODO as the heuristic. The heuristic function will be zero at the goal but also at all other exhausted paths.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pq_index</span><span class="p">(</span><span class="n">path_distance</span><span class="p">,</span><span class="n">not_accessed</span><span class="p">):</span>
+        <span class="n">heuristic</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">not_accessed</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">path_distance</span>
+        <span class="k">return</span> <span class="n">cost</span> <span class="o">+</span> <span class="n">heuristic</span>
+</pre></div>
+</div>
+<p>So, when a path is completely exhausted, the total cost reported is the euclidian distance traversed.</p>
 </div>
 </div>
 
@@ -80,7 +100,7 @@ This is a better recursive solution to find a suboptimal solution to this proble
 <li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem I</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">Knapsack and Travel Salesman Combined Problem II</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem III</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>

@@ -44,17 +44,17 @@ In this article we are going to focus on the combinations and permutations of th
 <p>Once we know what properties do to all the problems we can start simplifying the search for the optimal solution avoiding the permutations.</p>
 <div class="section" id="inter-subpath-permutation">
 <h2>Inter-Subpath permutation<a class="headerlink" href="#inter-subpath-permutation" title="Permalink to this headline">¶</a></h2>
-<p>First off we are going to define the <strong>subpath</strong>. A subpath, <span class="math notranslate nohighlight">\(s\)</span>, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, <span class="math notranslate nohighlight">\(p\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</span></code>, has two subpahts: <span class="math notranslate nohighlight">\(s_1\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code> and <span class="math notranslate nohighlight">\(s_2\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;A-&gt;O</span></code>.</p>
+<p>First off, we are going to define the <strong>subpath</strong>. A subpath, <span class="math notranslate nohighlight">\(s\)</span>, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, <span class="math notranslate nohighlight">\(p\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</span></code>, has two subpahts: <span class="math notranslate nohighlight">\(s_1\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code> and <span class="math notranslate nohighlight">\(s_2\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;A-&gt;O</span></code>.</p>
 <p>So, if we consider the particular solution to the The cost of the solution will be:</p>
 <div class="math notranslate nohighlight">
-\[cost(p) = \sum_i cost(s_i) = s_1 + s_2\]</div>
-<p>The cost operation is conmutative respect the subpaths present in the path. So, the solution <span class="math notranslate nohighlight">\(s_1 \rightarrow s_2\)</span> is equivalent to <span class="math notranslate nohighlight">\(s_2 \rightarrow s_1\)</span> which leaves the total cost the same.</p>
+\[cost(p) = \sum_i cost(s_i) = cost(s_1) + cost(s_2)\]</div>
+<p>As we can see, the cost operation is conmutative respect the subpaths present in the path. So, the solution <span class="math notranslate nohighlight">\(s_1 \rightarrow s_2\)</span> is equivalent to <span class="math notranslate nohighlight">\(s_2 \rightarrow s_1\)</span> which leaves the total cost the same.</p>
 <p>With this in mind, we can calculate the number of optimal solution to our problem with the inter-path permutations.</p>
 <div class="math notranslate nohighlight">
 \[permutations_{inter} = |S(p)|!\]</div>
 <p>Where <span class="math notranslate nohighlight">\(S(p)\)</span> denotes the set of subpaths in the path <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(| |\)</span> the number of elements in the set and <code class="docutils literal notranslate"><span class="pre">!</span></code> the factorial.</p>
 <p>For complex scenarios that require mutiple passes through the Origin, the total number of equivalent solutions increases with the factorial of that number.</p>
-<p>Particularely, this is noticeable for the paths that go to the Origin after each element. There are <span class="math notranslate nohighlight">\(N!\)</span> cases of the worst possible path.</p>
+<p>Particularely, this is noticeable for the paths that go to the Origin after each element. There are <span class="math notranslate nohighlight">\(N!\)</span> permutations of the worst possible path.</p>
 </div>
 <div class="section" id="id1">
 <h2>Inter-Subpath permutation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
@@ -74,6 +74,7 @@ In this article we are going to focus on the combinations and permutations of th
 <span class="n">C</span> <span class="o">=</span> <span class="n">Ew</span><span class="p">(</span><span class="n">E</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mf">3.2830</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">0.6719</span><span class="p">))]</span>
 </pre></div>
 </div>
+<p>Here we can see 14 differents path with a total of 3 topologies that yield the following costs: 20.6478 (x4), 26.4671 (x4) and 26.7251 (x6). In the table, the different subpaths are colored so we can see the difference between them.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 12%" />

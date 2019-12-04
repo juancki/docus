@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Knapsack and Travel Salesman Combined Problem III" href="knapsack-travelsman-2.html" />
-    <link rel="prev" title="Knapsack and Travel Salesman Combined Problem" href="knapsack-travelsman.html" />
+    <link rel="prev" title="Knapsack and Travel Salesman Combined Problem I" href="knapsack-travelsman.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,8 +35,8 @@
             
   <div class="section" id="knapsack-and-travel-salesman-combined-problem-ii">
 <h1>Knapsack and Travel Salesman Combined Problem II<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-ii" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="breath-first-recursive-solution">
-<h2>Breath First (recursive solution)<a class="headerlink" href="#breath-first-recursive-solution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="breath-first">
+<h2>Breath First<a class="headerlink" href="#breath-first" title="Permalink to this headline">¶</a></h2>
 <p>This a first recursive solution to the optimization problem. With Breath First we are going search find the solution in the decision tree.</p>
 <p>The algorithm keeps track of all the branches at the same time with a Priority Queue (PQ) based on the total distance. At any time, the branch with least traveled distance is pop’ed from the PQ and is analyzed. From that branch, all possible transitions are obtained and added to queue with their respective cost.</p>
 <p>At any given time, the state of a wanna-be solution can be described with the following variables:</p>
@@ -57,12 +57,12 @@ Then, the Breath First will keep on searching (<code class="docutils literal not
     <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
         <span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_tree</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="c1"># comment this line to avoid exhaustive search</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="add-to-tree-and-base-case">
-<h2><code class="docutils literal notranslate"><span class="pre">add_to_tree</span></code> and  Base Case<a class="headerlink" href="#add-to-tree-and-base-case" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">add_to_tree</span></code> and  Base Case<a class="headerlink" href="#add-to-tree-and-base-case" title="Permalink to this headline">¶</a></h3>
 <p>The locations that have been passed by in any given branch is the list of parent nodes of the tree from the current node to the top.
 The possible transitions from there are those that have not been visited and also, allowed by the capacity constraint.</p>
 <p>We arrive to the base case when the picker has no more places to visit and is on the Origin. In that case, solution will be reported to the main loop where, if desired, and the search will be finished.</p>
@@ -83,7 +83,10 @@ The possible transitions from there are those that have not been visited and als
         <span class="n">not_accessible</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_solution_to_paths</span><span class="p">(</span><span class="n">not_accessible</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;solution found&#39;</span>
+
+    <span class="c1"># Continues with the recursive cases</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="recursive-case">
@@ -114,10 +117,11 @@ The possible transitions from there are those that have not been visited and als
 </div></blockquote>
 </li>
 </ol>
+<p>The code is not actually recursive, but if it was written recursivelly, this would be the recursive cases.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># RECURSIVE CASE</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_possible</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_possible</span><span class="p">:</span>            <span class="c1"># For every possible transition</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
-    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Added to the tree</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>           <span class="c1"># Add transition to the tree</span>
     <span class="n">new_d</span> <span class="o">=</span> <span class="n">d</span><span class="o">+</span><span class="n">World</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
     <span class="n">new_w</span> <span class="o">=</span> <span class="n">w</span><span class="o">+</span><span class="n">t</span><span class="o">.</span><span class="n">el</span><span class="o">.</span><span class="n">w</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">new_d</span><span class="p">,</span><span class="n">new_w</span><span class="p">),</span><span class="n">new_d</span><span class="p">)</span>
@@ -125,9 +129,9 @@ The possible transitions from there are those that have not been visited and als
 <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">O</span><span class="p">:</span>
     <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">O</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
-    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="c1"># Added to the tree</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">new_d</span> <span class="o">=</span> <span class="n">d</span><span class="o">+</span><span class="n">World</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">new_w</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">new_w</span> <span class="o">=</span> <span class="mi">0</span>                   <span class="c1"># knapsack will be emptied.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">new_d</span><span class="p">,</span><span class="n">new_w</span><span class="p">),</span><span class="n">new_d</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -156,23 +160,24 @@ In order to obtain the optimum, the algorithm has to check if the branches pop�
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Optimization Problem:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../opencv/index.html">OpenCV on GCP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../arduino/index.html">Self-balancing robots with the pieces of a CNC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman.html">Knapsack and Travel Salesman Combined Problem I</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">Knapsack and Travel Salesman Combined Problem III</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Robot Operating System (ROS):</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="knapsack-travelsman.html" title="previous chapter">Knapsack and Travel Salesman Combined Problem</a></li>
+      <li>Previous: <a href="knapsack-travelsman.html" title="previous chapter">Knapsack and Travel Salesman Combined Problem I</a></li>
       <li>Next: <a href="knapsack-travelsman-2.html" title="next chapter">Knapsack and Travel Salesman Combined Problem III</a></li>
   </ul></li>
 </ul>

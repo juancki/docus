@@ -9,12 +9,24 @@ Welcome to art roco's documentation!
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: Contents:
+   :caption: Optimization Problem:
+
+   problems/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Robot Operating System (ROS):
 
    ros/*
-   opencv/*
-   arduino/*
-   problems/*
+
+.. .. toctree::
+..    :maxdepth: 1
+..    :glob:
+..    :caption: Arduino Self-Balancer:
+..    
+..    arduino/*
+
   
  
 

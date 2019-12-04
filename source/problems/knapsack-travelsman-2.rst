@@ -4,8 +4,8 @@ Knapsack and Travel Salesman Combined Problem III
 
 We will first approach to the solution with an heuristic solution and then, we will see the A* implementation.
 
-HEURISTIC SOLUTION (recursive solution)
----------------------------------------
+Suboptimal Heuristic Solution 
+------------------------------
 This suboptimal solution serves as a test on the effects in the order of computations to better understand the computational burden of this project.
 This is a better recursive solution to find a suboptimal solution to this problem problem that takes into account the structure of the problem when searching for solutions.
 
@@ -28,7 +28,7 @@ The constraints are also included as in the BF solution. The main change is the 
 
 
 OPTIMUM
--------
+_______
 The code as expressed above does not accomplish the optimum, but rather a suboptimum that is the path that has the best ratio distance to nodes until N-1.
 
 Unfortunately for this approach, it is necessary to finish all the paths to guarantee that a solution is the best.
@@ -43,9 +43,9 @@ Conditions on the heuristic :math:`h(state)` function for A* are the following:
 
 - :math:`h` Gives a sense of the direction to search in the solution.
 - :math:`h(state) \geq 0` 
-- :math:`h(state) = 0` at the goal. 
+- :math:`h(goal) = 0` .
 
-In this case, I propose to use the number of elements left to visit, TODO as the heuristic.
+In this case, I propose to use the number of elements left to visit, TODO as the heuristic. The heuristic function will be zero at the goal but also at all other exhausted paths.
 
 .. code-block:: python
 

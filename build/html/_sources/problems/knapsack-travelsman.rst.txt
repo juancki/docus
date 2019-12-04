@@ -34,12 +34,13 @@ Travel Salesmane representation problem
       - .. figure:: images/uasd.svg
 
            Undirected 
-      - .. math::
-           
-           \left[\begin{array}{cccc}
-           0 & 0 & 0 & 0 \\
-           \end{array}
-           \right]
+
+..      - .. math::
+..           
+..           \left[\begin{array}{cccc}
+..           0 & 0 & 0 & 0 \\
+..           \end{array}
+..           \right]
 
 The Problem
 ...........
