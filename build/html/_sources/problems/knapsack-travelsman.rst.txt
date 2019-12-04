@@ -4,6 +4,13 @@ Knapsack and Travel Salesman Combined Problem I
 
 This problem comes out of simply adding the restrictions of two of the most famous optimization problems: Knapsack problem and the Travel Salesman problem.
 
+**Next articles in this series:**
+
+.. toctree::
+        :glob:
+        :maxdepth: 1
+
+        ./knapsack-travelsman*
 
 Knapsack problem
 ................

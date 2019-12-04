@@ -2,6 +2,7 @@
 Knapsack and Travel Salesman Combined Problem II
 ================================================
 
+
 Breath First 
 -------------
 This a first recursive solution to the optimization problem. With Breath First we are going search find the solution in the decision tree.

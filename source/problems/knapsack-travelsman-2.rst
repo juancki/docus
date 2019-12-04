@@ -2,7 +2,8 @@
 Knapsack and Travel Salesman Combined Problem III
 =================================================
 
-We will first approach to the solution with an heuristic solution and then, we will see the A* implementation.
+We will first approach to the solution with an heuristic solution and then, we will see an heuristic solution plus A* implementation.
+
 
 Suboptimal Heuristic Solution 
 ------------------------------

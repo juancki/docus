@@ -12,6 +12,7 @@ These two properties of the problem subject to discussion affect dramatically to
 
 Once we know what properties do to all the problems we can start simplifying the search for the optimal solution avoiding the permutations.
 
+
 Inter-Subpath permutation
 -------------------------
 First off, we are going to define the **subpath**. A subpath, :math:`s`, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, :math:`p`: ``O->C->B->O->A->O``, has two subpahts: :math:`s_1`: ``O->C->B->O`` and :math:`s_2`: ``O->A->O``. 
