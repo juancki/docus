@@ -67,6 +67,8 @@ Where :math:`Q` is the number of subpaths, s, in the path, p, with two or more e
         C = Ew(E(weight=3),P(x=-3.2830,y=0.6719))]
 
         
+Here we can see 14 differents path with a total of 3 topologies that yield the following costs: 20.6478 (x4), 26.4671 (x4) and 26.7251 (x6). In the table, the different subpaths are colored so we can see the difference between them.
+
 ===  =======  ===============
  n   COST     PATH        
 ===  =======  ===============
@@ -120,6 +122,5 @@ With this simple solution, the Inter-Subpaths are reduced drastically. If this t
 S2 - Not repeating the permutations
 ___________________________________
 We will go for the ordered list of combinations without the origin and will analize each list to find the maximum number of elements that can be taken without passing through the Origin.
-
 
 
