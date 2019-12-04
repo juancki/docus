@@ -2,6 +2,8 @@
 Knapsack and Travel Salesman Combined Problem III
 =================================================
 
+We will first approach to the solution with an heuristic solution and then, we will see the A* implementation.
+
 HEURISTIC SOLUTION (recursive solution)
 ---------------------------------------
 This suboptimal solution serves as a test on the effects in the order of computations to better understand the computational burden of this project.
@@ -33,9 +35,17 @@ Unfortunately for this approach, it is necessary to finish all the paths to guar
 
 A* Algorithm
 ------------
+A* is designed for shortest path finding algorithms. A* is also similar to BF and the one presented in the previous subsection. A* also uses a PQ and takes into account the size of the knapsack in the same way BF does. The important thing about the A* is that it guarantees the optimial solution for the shortes path and configurability find the solution quickly.
 
-Conditions on the heuristic function for A*....
+A* has a cost function composed of both, the actual euclidian cost, :math:`g`, and a virtual cost of an heuristic function, :math:`g`.
 
+Conditions on the heuristic :math:`h(state)` function for A* are the following:
+
+- :math:`h` Gives a sense of the direction to search in the solution.
+- :math:`h(state) \geq 0` 
+- :math:`h(state) = 0` at the goal. 
+
+In this case, I propose to use the number of elements left to visit, TODO as the heuristic.
 
 .. code-block:: python
 
@@ -44,3 +54,5 @@ Conditions on the heuristic function for A*....
                 cost = path_distance
                 return cost + heuristic
 
+
+So, when a path is completely exhausted, the total cost reported is the euclidian distance traversed.

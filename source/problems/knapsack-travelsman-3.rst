@@ -14,15 +14,15 @@ Once we know what properties do to all the problems we can start simplifying the
 
 Inter-Subpath permutation
 -------------------------
-First off we are going to define the **subpath**. A subpath, :math:`s`, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, :math:`p`: ``O->C->B->O->A->O``, has two subpahts: :math:`s_1`: ``O->C->B->O`` and :math:`s_2`: ``O->A->O``. 
+First off, we are going to define the **subpath**. A subpath, :math:`s`, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, :math:`p`: ``O->C->B->O->A->O``, has two subpahts: :math:`s_1`: ``O->C->B->O`` and :math:`s_2`: ``O->A->O``. 
 
 So, if we consider the particular solution to the The cost of the solution will be:
 
 .. math:: 
 
-        cost(p) = \sum_i cost(s_i) = s_1 + s_2
+        cost(p) = \sum_i cost(s_i) = cost(s_1) + cost(s_2)
  
-The cost operation is conmutative respect the subpaths present in the path. So, the solution :math:`s_1 \rightarrow s_2`` is equivalent to :math:`s_2 \rightarrow s_1` which leaves the total cost the same.
+As we can see, the cost operation is conmutative respect the subpaths present in the path. So, the solution :math:`s_1 \rightarrow s_2`` is equivalent to :math:`s_2 \rightarrow s_1` which leaves the total cost the same.
 
 With this in mind, we can calculate the number of optimal solution to our problem with the inter-path permutations.
 
@@ -34,7 +34,7 @@ Where :math:`S(p)` denotes the set of subpaths in the path :math:`p`, :math:`| |
 
 For complex scenarios that require mutiple passes through the Origin, the total number of equivalent solutions increases with the factorial of that number.
 
-Particularely, this is noticeable for the paths that go to the Origin after each element. There are :math:`N!` cases of the worst possible path.
+Particularely, this is noticeable for the paths that go to the Origin after each element. There are :math:`N!` permutations of the worst possible path.
 
 
 Inter-Subpath permutation
