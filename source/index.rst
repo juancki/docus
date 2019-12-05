@@ -5,7 +5,7 @@
 
 Welcome to art roco's!
 ======================
-Hi! I am Juan Carlos Gómez. In this web I save part of my interests, personal projects and ideas. 
+Hi! I am Juan Carlos Gómez. In this web, you will see the articles of the topics I am most interested to. 
 
 .. You can download my CV :download:`here<cv_g.pdf>`.
 
@@ -22,6 +22,8 @@ Hi! I am Juan Carlos Gómez. In this web I save part of my interests, personal p
    :caption: Robot Operating System (ROS):
 
    ros/*
+
+*The site is under construction and might have some errors.*
 
 .. .. toctree::
 ..    :maxdepth: 1

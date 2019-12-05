@@ -12,7 +12,11 @@ Knapsack and Travel Salesman Combined Problem I
 
 Introduction
 ------------
-So, imagine that you are a field worker, and you have to pick up the bales that are sparsed all over the field. Or, that you have to set the path of a robot in Mars which goal is getting the precious stones to be analyzed. This two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
+Imagine that you are a field worker, and you have to pick up the bales that are sparsed all over the field. As it can be seen in the image below a tractor might not have room enough to carry all bales at the same time. 
+
+In the image on the right side, another scenario is depicted. A robot in the Mars Station waits for you to send the path that will get all the precious minerals for your research. The minerals have different sizes and unfortunately, they do not fit in the robot's box.
+
+This two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
 
 
 .. list-table:: 
