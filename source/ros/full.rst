@@ -64,7 +64,7 @@ The cost of this instance will have to your project will be the due to the confi
 
 
 chomoting.cloud-init
---------------------
+....................
 
 This file describes in a cloud-standarized way to set up the instance. In this case we have added the sources and packages required to install ROS Melodic.
 
@@ -78,26 +78,26 @@ The second part shows 5 sections:
 - write_files: We create and set content of the following files.
 - runcmd: List of string that will be executed near the end of the process. 
 
-bootcmd:
-........
+cloud-init: bootcmd:
+--------------------
 We set up the keys of the sources to be able to get the index of the packages.
 
-apt_sources:
-............
+cloud-init: apt_sources:
+------------------------
 Then we add all the sources that will be necessary to locate the packages that we want to install.
 
 In this case we set the sources for:  ROS, Docker and some Google Toos such as logging, monitoring and remote-desktop.
 
-packages:
-.........
+cloud-init: packages:
+---------------------
 The actual packages that we would install using ``apt install``. We include the packages included in the ROS Melodic installation_.
 
-write_files:
-............
+cloud-init: write_files:
+------------------------
 In this section, we set up the basic files for apt, remote-desktop and docker.
 
-runcmd:
-.......
+cloud-init: runcmd:
+-------------------
 Finally the services are launch, PyCharm/Eclipse installed and ROS' rosdep initialized.
 
 The only thing left,

@@ -91,8 +91,9 @@
 </div>
 <p>The cost of this instance will have to your project will be the due to the configuration of the instance <a class="reference external" href="https://cloud.google.com/compute/docs/machine-types">type</a> that in this case is set to <code class="docutils literal notranslate"><span class="pre">n1-standard-4</span></code> but can have multple cores and the sieze of the disk</p>
 </div>
+</div>
 <div class="section" id="chomoting-cloud-init">
-<h3>chomoting.cloud-init<a class="headerlink" href="#chomoting-cloud-init" title="Permalink to this headline">¶</a></h3>
+<h2>chomoting.cloud-init<a class="headerlink" href="#chomoting-cloud-init" title="Permalink to this headline">¶</a></h2>
 <p>This file describes in a cloud-standarized way to set up the instance. In this case we have added the sources and packages required to install ROS Melodic.</p>
 <p>Shown ahead, this file has a first commented part to show the instructions to setup the machine and to connect with remotedesktop.</p>
 <p>The second part shows 5 sections:</p>
@@ -103,27 +104,25 @@
 <li><p>write_files: We create and set content of the following files.</p></li>
 <li><p>runcmd: List of string that will be executed near the end of the process.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="bootcmd">
-<h2>bootcmd:<a class="headerlink" href="#bootcmd" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloud-init-bootcmd">
+<h3>cloud-init: bootcmd:<a class="headerlink" href="#cloud-init-bootcmd" title="Permalink to this headline">¶</a></h3>
 <p>We set up the keys of the sources to be able to get the index of the packages.</p>
 </div>
-<div class="section" id="apt-sources">
-<h2>apt_sources:<a class="headerlink" href="#apt-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloud-init-apt-sources">
+<h3>cloud-init: apt_sources:<a class="headerlink" href="#cloud-init-apt-sources" title="Permalink to this headline">¶</a></h3>
 <p>Then we add all the sources that will be necessary to locate the packages that we want to install.</p>
 <p>In this case we set the sources for:  ROS, Docker and some Google Toos such as logging, monitoring and remote-desktop.</p>
 </div>
-<div class="section" id="packages">
-<h2>packages:<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloud-init-packages">
+<h3>cloud-init: packages:<a class="headerlink" href="#cloud-init-packages" title="Permalink to this headline">¶</a></h3>
 <p>The actual packages that we would install using <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span></code>. We include the packages included in the ROS Melodic <a class="reference external" href="http://wiki.ros.org/melodic/Installation/Ubuntu">installation</a>.</p>
 </div>
-<div class="section" id="write-files">
-<h2>write_files:<a class="headerlink" href="#write-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloud-init-write-files">
+<h3>cloud-init: write_files:<a class="headerlink" href="#cloud-init-write-files" title="Permalink to this headline">¶</a></h3>
 <p>In this section, we set up the basic files for apt, remote-desktop and docker.</p>
 </div>
-<div class="section" id="runcmd">
-<h2>runcmd:<a class="headerlink" href="#runcmd" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloud-init-runcmd">
+<h3>cloud-init: runcmd:<a class="headerlink" href="#cloud-init-runcmd" title="Permalink to this headline">¶</a></h3>
 <p>Finally the services are launch, PyCharm/Eclipse installed and ROS’ rosdep initialized.</p>
 <p>The only thing left,</p>
 <div class="literal-block-wrapper docutils container" id="id2">
@@ -294,6 +293,7 @@
 
 <span class="nt">package_reboot_if_required</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="hacking-with-cloud-init">
