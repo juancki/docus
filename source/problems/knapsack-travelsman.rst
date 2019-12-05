@@ -23,7 +23,7 @@ So imagin that you are a field worker and after cutting the wheat, you have to p
 
            A farmer that picks up the sheaves with a tractor.
 
-      - .. figure:: images/mars_station.svg
+      - .. figure:: images/mars_station.png
 
            A robot that collects minerals in the Mars station.
 

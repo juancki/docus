@@ -57,7 +57,7 @@ Then, the Breath First will keep on searching (<code class="docutils literal not
     <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
         <span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQ</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_tree</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">node</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="c1"># comment this line to avoid exhaustive search</span>
 </pre></div>
 </div>
@@ -69,7 +69,7 @@ The possible transitions from there are those that have not been visited and als
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">parent</span>
     <span class="n">not_accessible</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">element</span><span class="p">]</span>
-    <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">not_accessible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">element</span><span class="p">)</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span>
 
@@ -210,7 +210,7 @@ In order to obtain the optimum, once the first solution has been found, the algo
       &copy;2019, Juan Carlos Gomez (juancarlosgomezpomar@).
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
