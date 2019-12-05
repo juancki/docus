@@ -12,9 +12,26 @@ This problem comes out of simply adding the restrictions of two of the most famo
 
         ./knapsack-travelsman*
 
+Introduction
+------------
+So imagin that you are a field worker and after cutting the wheat, you have to pick up the bales that are sparsed all over the field. Or that you have to program the route for a robot expeditioner in Mars with the periodic goal of getting the precious stones to be analyzed. This two scenarios have a common problem. You want to minimize the traveled distance but have limited capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
+
+
+.. list-table:: 
+
+    * - .. figure:: images/tractor.png
+
+           A farmer that picks up the sheaves with a tractor.
+
+      - .. figure:: images/mars_station.svg
+
+           A robot that collects minerals in the Mars station.
+
+So, firstly, we will cover the basics of the two famous optimizatio problems: Knapsack problem and Travel Salesman problem.
+
 Knapsack problem
 ................
-The statement of this problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break. 
+The statement of the Knapsack problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break. 
 Then, the objective is to decide which items select and which leave in order to **maximize** the value of the things that we can put inside of our knapsack.
 
 The number of items to carry is not bounded, only the weight it can support.
@@ -24,13 +41,13 @@ The complexity of the problem is that it is necessary to search for (almost) all
 
 Travel Salesman Problem
 .......................
-This problems is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.
+The Travel Salesman problem is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.
 
 Travel Salesmane representation problem
 .......................................
 **Graphs** :The actual positions of the locations is not relevant but the distance between them is. The problem is usually presented with a graph which vertexes are the locations and the edges are the distance from one vertex to the other.
 
-**Matricial** :It can also be represented with a NxN matrix where N is the number of elements. The element :math:`a_{ij}` is the distance from the location :math:`l_i` to :math:`l_j`. If you can go and come from any two locations, the graph will be undirected and the matrix symetric. 
+.. **Matricial** :It can also be represented with a NxN matrix where N is the number of elements. The element :math:`a_{ij}` is the distance from the location :math:`l_i` to :math:`l_j`. If you can go and come from any two locations, the graph will be undirected and the matrix symetric. 
 
 .. list-table:: 
 
