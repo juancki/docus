@@ -36,16 +36,17 @@
   <div class="section" id="knapsack-and-travel-salesman-combined-problem-iv">
 <h1>Knapsack and Travel Salesman Combined Problem IV<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-iv" title="Permalink to this headline">¶</a></h1>
 <p>Until now, we have presented the problem, a way to find an optimum solution using Breath First (BF) and a suboptimal solution with a heuristic function.
-In this article we are going to focus on the combinations and permutations of the solutions to this problem.</p>
+In this article we are going to focus on the combinations and permutations of the solutions.</p>
 <ul class="simple">
-<li><p>Intra-subpath permuation</p></li>
-<li><p>Inter-subpath permuation</p></li>
+<li><p>Intra-subpath permuations</p></li>
+<li><p>Inter-subpath permuations</p></li>
 </ul>
-<p>These two properties of the problem subject to discussion affect dramatically to the time to find the solution. This is because multiple paths can have the same exact cost and the first two algorithms: BF and a Heuristics version have to explore all the permutations of multiple candidate solutions to get to the end of any of them.</p>
+<p>These two properties of the problem subject to discussion affect dramatically to the time to find the solution. This is because multiple paths can have the same exact cost and the algorithms introduced: BF and A* have to explore all the permutations of multiple candidate solutions to get to the end of any of them.</p>
 <p>Once we know what properties do to all the problems we can start simplifying the search for the optimal solution avoiding the permutations.</p>
 <div class="section" id="inter-subpath-permutation">
 <h2>Inter-Subpath permutation<a class="headerlink" href="#inter-subpath-permutation" title="Permalink to this headline">¶</a></h2>
-<p>First off, we are going to define the <strong>subpath</strong>. A subpath, <span class="math notranslate nohighlight">\(s\)</span>, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, <span class="math notranslate nohighlight">\(p\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</span></code>, has two subpahts: <span class="math notranslate nohighlight">\(s_1\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code> and <span class="math notranslate nohighlight">\(s_2\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;A-&gt;O</span></code>.</p>
+<p>First off, we are going to define the <strong>subpath</strong>. A subpath, <span class="math notranslate nohighlight">\(s\)</span>, is a list of picked elmenets between consecutive passes through the Origin. E.g. a solution from the three element problem presented in the first article, <span class="math notranslate nohighlight">\(p\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O-&gt;A-&gt;O</span></code>, has two subpahts: <span class="math notranslate nohighlight">\(s_1\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;C-&gt;B-&gt;O</span></code> and <span class="math notranslate nohighlight">\(s_2\)</span>: <code class="docutils literal notranslate"><span class="pre">O-&gt;A-&gt;O</span></code>.</p>
+<p>The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy.</p>
 <p>So, if we consider the particular solution to the The cost of the solution will be:</p>
 <div class="math notranslate nohighlight">
 \[cost(p) = \sum_i cost(s_i) = cost(s_1) + cost(s_2)\]</div>
@@ -191,7 +192,6 @@ In this article we are going to focus on the combinations and permutations of th
 <p class="caption"><span class="caption-text">Robot Operating System (ROS):</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../ros/full.html">Ubuntu 18.04 LTS on GCP for ROS with GUI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ros/index.html">ROS on GCP with Docker</a></li>
 </ul>
 
 <div class="relations">

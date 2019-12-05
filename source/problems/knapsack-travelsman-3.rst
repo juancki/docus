@@ -3,19 +3,21 @@ Knapsack and Travel Salesman Combined Problem IV
 ================================================
 
 Until now, we have presented the problem, a way to find an optimum solution using Breath First (BF) and a suboptimal solution with a heuristic function. 
-In this article we are going to focus on the combinations and permutations of the solutions to this problem.
+In this article we are going to focus on the combinations and permutations of the solutions.
 
-- Intra-subpath permuation
-- Inter-subpath permuation
+- Intra-subpath permuations
+- Inter-subpath permuations
 
-These two properties of the problem subject to discussion affect dramatically to the time to find the solution. This is because multiple paths can have the same exact cost and the first two algorithms: BF and a Heuristics version have to explore all the permutations of multiple candidate solutions to get to the end of any of them.
+These two properties of the problem subject to discussion affect dramatically to the time to find the solution. This is because multiple paths can have the same exact cost and the algorithms introduced: BF and A* have to explore all the permutations of multiple candidate solutions to get to the end of any of them.
 
 Once we know what properties do to all the problems we can start simplifying the search for the optimal solution avoiding the permutations.
 
 
 Inter-Subpath permutation
 -------------------------
-First off, we are going to define the **subpath**. A subpath, :math:`s`, is a list of picked elmenets between consecutive passes through the Origin. The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy. E.g. a solution from the three element problem presented in the first article, :math:`p`: ``O->C->B->O->A->O``, has two subpahts: :math:`s_1`: ``O->C->B->O`` and :math:`s_2`: ``O->A->O``. 
+First off, we are going to define the **subpath**. A subpath, :math:`s`, is a list of picked elmenets between consecutive passes through the Origin. E.g. a solution from the three element problem presented in the first article, :math:`p`: ``O->C->B->O->A->O``, has two subpahts: :math:`s_1`: ``O->C->B->O`` and :math:`s_2`: ``O->A->O``.
+
+The most important property about a subpath is that it always starts and ends at the Origin with the knapsack emtpy.
 
 So, if we consider the particular solution to the The cost of the solution will be:
 

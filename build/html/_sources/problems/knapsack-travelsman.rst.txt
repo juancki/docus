@@ -12,7 +12,7 @@ Knapsack and Travel Salesman Combined Problem I
 
 Introduction
 ------------
-So imagin that you are a field worker and after cutting the wheat, you have to pick up the bales that are sparsed all over the field. Or that you have to program the route for a robot expeditioner in Mars with the periodic goal of getting the precious stones to be analyzed. This two scenarios have a common problem. You want to minimize the traveled distance but have limited capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
+So, imagine that you are a field worker, and you have to pick up the bales that are sparsed all over the field. Or, that you have to set the path of a robot in Mars which goal is getting the precious stones to be analyzed. This two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
 
 
 .. list-table:: 
@@ -25,7 +25,7 @@ So imagin that you are a field worker and after cutting the wheat, you have to p
 
            A robot that collects minerals in the Mars station.
 
-So, firstly, we will cover the basics of the two famous optimizatio problems: Knapsack problem and Travel Salesman problem.
+To better understand this problem we will cover the very basics of the two famous optimizatio problems: Knapsack problem and Travel Salesman problem.
 
 Knapsack problem
 ................
@@ -35,15 +35,15 @@ Then, the objective is to decide which items select and which leave in order to 
 The number of items to carry is not bounded, only the weight it can support.
 One first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.
 
-The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Said with more technical words the problem is NP-hard, it can not be solved in polynomial time.
+The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Or more technically, the Knapsack problem is NP-hard.
 
 Travel Salesman Problem
 .......................
 The Travel Salesman problem is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.
 
-Travel Salesmane representation problem
-.......................................
-**Graphs** :The actual positions of the locations is not relevant but the distance between them is. The problem is usually presented with a graph which vertexes are the locations and the edges are the distance from one vertex to the other.
+Travel Salesman representation
+..............................
+**Graphs** :The actual euclidian position of the locations is not relevant but the distance between them is. The problem is usually presented with a graph which vertexes are the locations and the edges are the distance from one vertex to the other.
 
 .. **Matricial** :It can also be represented with a NxN matrix where N is the number of elements. The element :math:`a_{ij}` is the distance from the location :math:`l_i` to :math:`l_j`. If you can go and come from any two locations, the graph will be undirected and the matrix symetric. 
 
@@ -64,8 +64,8 @@ Travel Salesmane representation problem
 ..           \end{array}
 ..           \right]
 
-The Problem
-...........
+The Picker Problem
+..................
 In this case, we have a picker which has to pick-up (hence the name) a series of items that are spread on a field. All items have to be taken and put into a bin that is on the Origin. This game dynamic will go as follows:
 
 - The picker will go from the current place to the next one.
@@ -89,7 +89,7 @@ However, there is a constraint, the picker can not carry at the same time more t
 
 Tree decision structure
 .......................
-At first our picker will be on the Origin with zero objects. Then it can go any of the nodes A or B. After this firs step, if allowed by its capacity, it can go to the other node (B or A), otherwise it will have to pass throught the Origin to unpack. Finally, it has to end in the Origin.
+At first our picker will be on the Origin with zero objects. The next move has to be one of the nodes A or B. After this firs step, if allowed by its capacity, it can go to the other node (B or A), otherwise it will have to pass throught the Origin to unpack. Finally, it has to end in the Origin.
 
 .. figure:: images/tree_2.svg
 
