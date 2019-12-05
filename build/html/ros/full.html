@@ -35,11 +35,11 @@
             
   <div class="section" id="ubuntu-18-04-lts-on-gcp-for-ros-with-gui">
 <h1>Ubuntu 18.04 LTS on GCP for ROS with GUI<a class="headerlink" href="#ubuntu-18-04-lts-on-gcp-for-ros-with-gui" title="Permalink to this headline">¶</a></h1>
-<p>In this tuturial we will cover the script I create to make your own ROS development enviroment in a GCP instance and connect to it using Google’s Remote Desktop.</p>
+<p>In this tutorial we will cover the script I created to make your own ROS development enviroment in a GCP instance. And then, connect to it using Google’s Remote Desktop.</p>
 <p>In the turorial <em>Debian 9 docker ROS on GCP</em> we used the metadata information of the <code class="docutils literal notranslate"><span class="pre">start-up</span></code> script which allows for simple interface to execute commands in a bash format.</p>
 <p>In this case, we are going to use the <code class="docutils literal notranslate"><span class="pre">.cloud-init</span></code> metedata yaml (<a class="reference external" href="https://cloud.google.com/container-optimized-os/docs/how-to/create-configure-instance">documentation</a>) to set multiple things:</p>
 <ul class="simple">
-<li><p>Set run commands to be run on the creation only.</p></li>
+<li><p>Set run commands to be executed on the creation only.</p></li>
 <li><p>Sources of the packages to download the packages.</p></li>
 <li><p>The packages that we want to download.</p></li>
 </ul>
@@ -51,18 +51,22 @@
 ./create-desktop.bash full
 </pre></div>
 </div>
-<p>You will see that the GCE instance is being launch in the console.</p>
+<p>You will see that the GCE instance is being launched in the console.</p>
 </div>
 <div class="section" id="connect-remote-desktop">
 <h2>Connect Remote-desktop<a class="headerlink" href="#connect-remote-desktop" title="Permalink to this headline">¶</a></h2>
-<p>On the GCP Console Terminal we execute, this will connect and wait for the initialization to finish.:</p>
+<ul class="simple">
+<li><p>On the GCP Cloud Shell we connect to the newly created instance and wait for the initialization to finish.:</p></li>
+</ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gcloud compute ssh desktop-full -- journalctl -f --identifier<span class="o">=</span>cloud-init
 </pre></div>
 </div>
-<p>Then, open this link in your browser: <a class="reference external" href="http://goto.google.com/crd-auth">http://goto.google.com/crd-auth</a></p>
-<p>Once accepted permissions copy the command and remember to add a name to the end of the command such as <code class="docutils literal notranslate"><span class="pre">desktop-full</span></code>. Paste it into the terminal and press enter.</p>
-<p>Then go to Chrome Remote Desktop client in your browser:  <a class="reference external" href="https://remotedesktop.google.com">https://remotedesktop.google.com</a></p>
-<p>Open a terminal an run, to set up bash:</p>
+<ul class="simple">
+<li><p>Then, open this link in your browser: <a class="reference external" href="http://goto.google.com/crd-auth">http://goto.google.com/crd-auth</a></p></li>
+<li><p>Once accepted permissions copy the command and remember to add a name to the end of the command such as <code class="docutils literal notranslate"><span class="pre">desktop-full</span></code>. Paste it into the terminal and press enter.</p></li>
+<li><p>Then go to Chrome Remote Desktop client in your browser:  <a class="reference external" href="https://remotedesktop.google.com">https://remotedesktop.google.com</a></p></li>
+<li><p>Open a terminal an run, to set up bash:</p></li>
+</ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;source /opt/ros/melodic/setup.bash&quot;</span> &gt;&gt; ~/.bashrc
 <span class="nb">source</span> ~/.bashrc
 </pre></div>
@@ -361,7 +365,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Juan Carlos Gomez (juancarlosgomezpomar@).
+      &copy;2019, Juan Carlos Gómez (juancarlosgomezpomar@gmail.com).
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>

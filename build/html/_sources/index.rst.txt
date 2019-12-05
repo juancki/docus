@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to art roco's documentation!
-====================================
+Welcome to art roco's!
+======================
+Hi! I am Juan Carlos Gómez. Here I have a little bit of my interests, personal projects and ideas. 
+
+You can download my CV here :download:`here<cv_g.pdf>`
 
 .. toctree::
    :maxdepth: 1
@@ -34,8 +37,6 @@ Welcome to art roco's documentation!
 
 
 Indices and tables
-==================
+------------------
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

@@ -2,13 +2,13 @@
 Ubuntu 18.04 LTS on GCP for ROS with GUI
 ========================================
 
-In this tuturial we will cover the script I create to make your own ROS development enviroment in a GCP instance and connect to it using Google's Remote Desktop.
+In this tutorial we will cover the script I created to make your own ROS development enviroment in a GCP instance. And then, connect to it using Google's Remote Desktop.
 
 In the turorial *Debian 9 docker ROS on GCP* we used the metadata information of the ``start-up`` script which allows for simple interface to execute commands in a bash format.
 
 In this case, we are going to use the ``.cloud-init`` metedata yaml (documentation_) to set multiple things:
 
-- Set run commands to be run on the creation only.
+- Set run commands to be executed on the creation only.
 - Sources of the packages to download the packages.
 - The packages that we want to download.
 
@@ -23,23 +23,24 @@ Execute this file you will create the instance:
    chmod +x create-desktop.bash
    ./create-desktop.bash full
 
-You will see that the GCE instance is being launch in the console.  
+You will see that the GCE instance is being launched in the console.  
 
 Connect Remote-desktop
 ......................
-On the GCP Console Terminal we execute, this will connect and wait for the initialization to finish.:
+
+- On the GCP Cloud Shell we connect to the newly created instance and wait for the initialization to finish.:
 
 .. code-block:: bash
 
    gcloud compute ssh desktop-full -- journalctl -f --identifier=cloud-init
 
-Then, open this link in your browser: http://goto.google.com/crd-auth
+- Then, open this link in your browser: http://goto.google.com/crd-auth
 
-Once accepted permissions copy the command and remember to add a name to the end of the command such as ``desktop-full``. Paste it into the terminal and press enter.
+- Once accepted permissions copy the command and remember to add a name to the end of the command such as ``desktop-full``. Paste it into the terminal and press enter.
 
-Then go to Chrome Remote Desktop client in your browser:  https://remotedesktop.google.com
+- Then go to Chrome Remote Desktop client in your browser:  https://remotedesktop.google.com
 
-Open a terminal an run, to set up bash:
+- Open a terminal an run, to set up bash:
 
 .. code-block:: bash
 

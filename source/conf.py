@@ -20,8 +20,8 @@ sys.path.insert(1,os.path.abspath('../extensions'))
 # -- Project information -----------------------------------------------------
 
 project = 'art rocò'
-copyright = '2019, Juan Carlos Gomez (juancarlosgomezpomar@)'
-author = 'Juan Carlos Gomez (juancarlosgomezpomar@)'
+copyright = '2019, Juan Carlos Gómez (juancarlosgomezpomar@gmail.com)'
+author = 'Juan Carlos Gómez (juancarlosgomezpomar@gmail.com)'
 
 
 # -- General configuration ---------------------------------------------------
