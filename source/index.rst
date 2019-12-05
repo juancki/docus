@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to art roco's!
+Welcome to art rocò's!
 ======================
 Hi! I am Juan Carlos Gómez. In this web, you will see the articles of the topics I am most interested in.
 
