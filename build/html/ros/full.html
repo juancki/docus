@@ -89,7 +89,7 @@
 </pre></div>
 </div>
 </div>
-<p>The cost of this instance will have to your project will be the due to the configuration of the instance <a class="reference external" href="https://cloud.google.com/compute/docs/machine-types">type</a> that in this case is set to <code class="docutils literal notranslate"><span class="pre">n1-standard-4</span></code> but can have multple cores and the sieze of the disk</p>
+<p>The cost of this instance is is related to the instance <a class="reference external" href="https://cloud.google.com/compute/docs/machine-types">type</a> that in this case is set to <code class="docutils literal notranslate"><span class="pre">n1-standard-4</span></code> but can have multple cores and the size of the disk which is 200GB.</p>
 </div>
 </div>
 <div class="section" id="chomoting-cloud-init">
@@ -107,11 +107,17 @@
 <div class="section" id="cloud-init-bootcmd">
 <h3>cloud-init: bootcmd:<a class="headerlink" href="#cloud-init-bootcmd" title="Permalink to this headline">¶</a></h3>
 <p>We set up the keys of the sources to be able to get the index of the packages.</p>
+<p>Particularely, <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">curl</span> <span class="pre">-sSL</span> <span class="pre">'http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'</span> <span class="pre">|</span> <span class="pre">apt-key</span> <span class="pre">add</span> <span class="pre">-</span> <span class="pre">&gt;/dev/null</span></code> sets the key for ROS packages.</p>
 </div>
 <div class="section" id="cloud-init-apt-sources">
 <h3>cloud-init: apt_sources:<a class="headerlink" href="#cloud-init-apt-sources" title="Permalink to this headline">¶</a></h3>
 <p>Then we add all the sources that will be necessary to locate the packages that we want to install.</p>
 <p>In this case we set the sources for:  ROS, Docker and some Google Toos such as logging, monitoring and remote-desktop.</p>
+<p>We also the source of the ros packages in the <code class="docutils literal notranslate"><span class="pre">ros-latest.list</span></code> file under the <code class="docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d</span></code> folder.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">source</span><span class="p">:</span> <span class="s">&quot;deb</span><span class="nv"> </span><span class="s">http://packages.ros.org/ros/ubuntu</span><span class="nv"> </span><span class="s">bionic</span><span class="nv"> </span><span class="s">main&quot;</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ros-latest.list</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="cloud-init-packages">
 <h3>cloud-init: packages:<a class="headerlink" href="#cloud-init-packages" title="Permalink to this headline">¶</a></h3>
@@ -124,7 +130,6 @@
 <div class="section" id="cloud-init-runcmd">
 <h3>cloud-init: runcmd:<a class="headerlink" href="#cloud-init-runcmd" title="Permalink to this headline">¶</a></h3>
 <p>Finally the services are launch, PyCharm/Eclipse installed and ROS’ rosdep initialized.</p>
-<p>The only thing left,</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">chromoting.cloud-init</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#cloud-config</span>

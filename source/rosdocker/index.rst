@@ -12,13 +12,9 @@ Google anouced during 2018 a Cloud Robotics Platform (The Robot Report_) that wi
 
 .. _Report: https://therobotreport.com/google-cloud-robotics-platform/
 
-AWS' AutoMaker_ already makes possible to deploy Robotic Operating System (ROS) nodes on the cloud with access to developing tools such as speach recognition, simulation environments and premade demo applications ready to modify and addapt to the custom app of the developer.
+Google advancements in this field are visible in their GitHub repo_, where you can set up the a ROS node in Kubernetes. In this tutorial we will see how to create a GCE instance that has ROS with Docker.
 
-.. _AutoMaker: https://aws.amazon.com/es/robomaker/
-
-However, as October 2019 Google Cloud Platform does not provide a solution to robotic systems on the cloud.
-
-
+.. _repo: https://github.com/googlecloudrobotics
 
 
 Docker enviroment to manage ROS instances

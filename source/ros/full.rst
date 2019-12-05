@@ -60,7 +60,7 @@ Starting for the easiest part, this file only contains one command. This ``gclou
   :caption: create-desktop.bash
  
 
-The cost of this instance will have to your project will be the due to the configuration of the instance type_ that in this case is set to ``n1-standard-4`` but can have multple cores and the sieze of the disk 
+The cost of this instance is is related to the instance type_ that in this case is set to ``n1-standard-4`` but can have multple cores and the size of the disk which is 200GB.
 
 
 chomoting.cloud-init
@@ -82,25 +82,35 @@ cloud-init: bootcmd:
 --------------------
 We set up the keys of the sources to be able to get the index of the packages.
 
+Particularely, ``- curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add - >/dev/null`` sets the key for ROS packages.
+
 cloud-init: apt_sources:
 ------------------------
 Then we add all the sources that will be necessary to locate the packages that we want to install.
 
 In this case we set the sources for:  ROS, Docker and some Google Toos such as logging, monitoring and remote-desktop.
 
+We also the source of the ros packages in the ``ros-latest.list`` file under the ``/etc/apt/sources.list.d`` folder.
+
+.. code-block:: yaml
+
+        - source: "deb http://packages.ros.org/ros/ubuntu bionic main"
+          filename: ros-latest.list
+
+
 cloud-init: packages:
 ---------------------
 The actual packages that we would install using ``apt install``. We include the packages included in the ROS Melodic installation_.
+
 
 cloud-init: write_files:
 ------------------------
 In this section, we set up the basic files for apt, remote-desktop and docker.
 
+
 cloud-init: runcmd:
 -------------------
 Finally the services are launch, PyCharm/Eclipse installed and ROS' rosdep initialized.
-
-The only thing left,
 
 .. literalinclude:: chromoting.cloud-init
   :language: yaml
