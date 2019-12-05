@@ -47,7 +47,7 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Imagine that you are a field worker, and you have to pick up the bales that are sparsed all over the field. As it can be seen in the image below a tractor might not have room enough to carry all bales at the same time.</p>
 <p>In the image on the right side, another scenario is depicted. A robot in the Mars Station waits for you to send the path that will get all the precious minerals for your research. The minerals have different sizes and unfortunately, they do not fit in the robot’s box.</p>
-<p>This two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.</p>
+<p>These two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -67,17 +67,17 @@
 </tr>
 </tbody>
 </table>
-<p>To better understand this problem we will cover the very basics of the two famous optimizatio problems: Knapsack problem and Travel Salesman problem.</p>
-<div class="section" id="knapsack-problem">
-<h3>Knapsack problem<a class="headerlink" href="#knapsack-problem" title="Permalink to this headline">¶</a></h3>
+<p>To better understand this problem we will cover the very basics of the two famous optimization problems: the Knapsack problem and the Travel Salesman problem.</p>
+<div class="section" id="the-knapsack-problem">
+<h3>The Knapsack problem<a class="headerlink" href="#the-knapsack-problem" title="Permalink to this headline">¶</a></h3>
 <p>The statement of the Knapsack problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break.
 Then, the objective is to decide which items select and which leave in order to <strong>maximize</strong> the value of the things that we can put inside of our knapsack.</p>
 <p>The number of items to carry is not bounded, only the weight it can support.
 One first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.</p>
 <p>The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Or more technically, the Knapsack problem is NP-hard.</p>
 </div>
-<div class="section" id="travel-salesman-problem">
-<h3>Travel Salesman Problem<a class="headerlink" href="#travel-salesman-problem" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="the-travel-salesman-problem">
+<h3>The Travel Salesman Problem<a class="headerlink" href="#the-travel-salesman-problem" title="Permalink to this headline">¶</a></h3>
 <p>The Travel Salesman problem is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.</p>
 </div>
 <div class="section" id="travel-salesman-representation">
@@ -106,8 +106,8 @@ One first approximation to a solution might be to put the things with most value
 <p>In this case, we have a picker which has to pick-up (hence the name) a series of items that are spread on a field. All items have to be taken and put into a bin that is on the Origin. This game dynamic will go as follows:</p>
 <ul class="simple">
 <li><p>The picker will go from the current place to the next one.</p></li>
-<li><p>If there is a item to pick in the next location, the picker will take it and put it on a sack that they carry on.
-- The picker cannot take the item if the total weight of the items after taking it is grater than the sack capacity.</p></li>
+<li><p>If there is a item to pick in the next location, the picker will take it and put it on a knapsack they carry on.</p></li>
+<li><p>The picker cannot take the item if the total weight of the items after taking it is grater than the sack capacity.</p></li>
 <li><p>If the picker goes to the Origin, it will unpack everything that there is on the sack and put it on the Origin’s bin.</p></li>
 </ul>
 <p>However, there is a constraint, the picker can not carry at the same time more than its capacity.</p>
@@ -146,7 +146,7 @@ One first approximation to a solution might be to put the things with most value
 <div class="math notranslate nohighlight">
 \[T_S(N) = 2^{N-1}\cdot N!\]</div>
 <p>The factorial of N, <span class="math notranslate nohighlight">\(N!\)</span>, represents all the possible order of picking elements without going throug the Origin.
-The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</span>, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin or not up to <span class="math notranslate nohighlight">\(N-1\)</span> times.</p>
+The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</span>, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin up to <span class="math notranslate nohighlight">\(N-1\)</span> times.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>

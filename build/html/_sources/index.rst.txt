@@ -23,7 +23,7 @@ Hi! I am Juan Carlos Gómez. In this web, you will see the articles of the topic
 
    ros/*
 
-*The site is under construction and might have some errors.*
+*The site is still under construction and might have some errørs.*
 
 .. .. toctree::
 ..    :maxdepth: 1

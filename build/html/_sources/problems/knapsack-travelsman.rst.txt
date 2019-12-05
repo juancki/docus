@@ -16,7 +16,7 @@ Imagine that you are a field worker, and you have to pick up the bales that are 
 
 In the image on the right side, another scenario is depicted. A robot in the Mars Station waits for you to send the path that will get all the precious minerals for your research. The minerals have different sizes and unfortunately, they do not fit in the robot's box.
 
-This two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
+These two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.
 
 
 .. list-table:: 
@@ -29,10 +29,10 @@ This two scenarios have a common problem. You want to minimize the traveled dist
 
            A robot that collects minerals in the Mars station.
 
-To better understand this problem we will cover the very basics of the two famous optimizatio problems: Knapsack problem and Travel Salesman problem.
+To better understand this problem we will cover the very basics of the two famous optimization problems: the Knapsack problem and the Travel Salesman problem.
 
-Knapsack problem
-................
+The Knapsack problem
+....................
 The statement of the Knapsack problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break. 
 Then, the objective is to decide which items select and which leave in order to **maximize** the value of the things that we can put inside of our knapsack.
 
@@ -41,8 +41,8 @@ One first approximation to a solution might be to put the things with most value
 
 The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Or more technically, the Knapsack problem is NP-hard.
 
-Travel Salesman Problem
-.......................
+The Travel Salesman Problem
+............................
 The Travel Salesman problem is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.
 
 Travel Salesman representation
@@ -73,8 +73,9 @@ The Picker Problem
 In this case, we have a picker which has to pick-up (hence the name) a series of items that are spread on a field. All items have to be taken and put into a bin that is on the Origin. This game dynamic will go as follows:
 
 - The picker will go from the current place to the next one.
-- If there is a item to pick in the next location, the picker will take it and put it on a sack that they carry on.
-  - The picker cannot take the item if the total weight of the items after taking it is grater than the sack capacity.
+- If there is a item to pick in the next location, the picker will take it and put it on a knapsack they carry on.
+
+- The picker cannot take the item if the total weight of the items after taking it is grater than the sack capacity.
 - If the picker goes to the Origin, it will unpack everything that there is on the sack and put it on the Origin's bin.    
 
 However, there is a constraint, the picker can not carry at the same time more than its capacity.
@@ -112,7 +113,7 @@ To finish this article, we will explose the total number of possible solutions t
    T_S(N) = 2^{N-1}\cdot N!
 
 The factorial of N, :math:`N!`, represents all the possible order of picking elements without going throug the Origin.
-The exponential part, :math:`2^{N-1}`, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin or not up to :math:`N-1` times.
+The exponential part, :math:`2^{N-1}`, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin up to :math:`N-1` times.
 
 
 Example
