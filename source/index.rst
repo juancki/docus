@@ -5,7 +5,7 @@
 
 Welcome to art roco's!
 ======================
-Hi! I am Juan Carlos Gómez. In this web, you will see the articles of the topics I am most interested to. 
+Hi! I am Juan Carlos Gómez. In this web, you will see the articles of the topics I am most interested in.
 
 .. You can download my CV :download:`here<cv_g.pdf>`.
 
