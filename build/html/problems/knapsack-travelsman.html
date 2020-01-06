@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Knapsack and Travel Salesman Combined Problem I &#8212; art rocò  documentation</title>
+    <title>The Picker Problem I &#8212; art rocò  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Knapsack and Travel Salesman Combined Problem II" href="knapsack-travelsman-1.html" />
-    <link rel="prev" title="Welcome to art roco’s!" href="../index.html" />
+    <link rel="next" title="The Picker Problem II" href="knapsack-travelsman-1.html" />
+    <link rel="prev" title="Welcome to art rocò’s!" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,21 +33,21 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="knapsack-and-travel-salesman-combined-problem-i">
-<h1>Knapsack and Travel Salesman Combined Problem I<a class="headerlink" href="#knapsack-and-travel-salesman-combined-problem-i" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="the-picker-problem-i">
+<h1>The Picker Problem I<a class="headerlink" href="#the-picker-problem-i" title="Permalink to this headline">¶</a></h1>
 <p><strong>Next articles in this series:</strong></p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">Knapsack and Travel Salesman Combined Problem II</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">Knapsack and Travel Salesman Combined Problem III</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">The Picker Problem II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">The Picker Problem III</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">The Picker Problem IV</a></li>
 </ul>
 </div>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Imagine that you are a field worker, and you have to pick up the bales that are sparsed all over the field. As it can be seen in the image below a tractor might not have room enough to carry all bales at the same time.</p>
-<p>In the image on the right side, another scenario is depicted. A robot in the Mars Station waits for you to send the path that will get all the precious minerals for your research. The minerals have different sizes and unfortunately, they do not fit in the robot’s box.</p>
-<p>These two scenarios have a common problem. You want to minimize the traveled distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.</p>
+<p>Put in the shoes of a field worker, figure 1. After a good season you have to pick up the bales that are sparsed all over the field. A good plan and you do it quickly, a bad plan and can take you forever.</p>
+<p>In the image on the right side, another scenario is depicted. A robot in the Mars Station waits for you to send the path that will get all the precious minerals for your research. The minerals have different sizes and unfortunately, all of them do not fit in the robot’s box at the same time.</p>
+<p>Two scenarios, same problem. You want to pick all the elements with the least distance but have limited transport capacity. Most probably you will be required to go and pick up some items go back to unload and repeat until you have all of them.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -56,33 +56,20 @@
 <tbody>
 <tr class="row-odd"><td><div class="figure align-default" id="id1">
 <img alt="../_images/tractor.png" src="../_images/tractor.png" />
-<p class="caption"><span class="caption-text">Figure 1: A farmer that picks up the sheaves with a tractor.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Figure 1: A field worker on Earth.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </td>
 <td><div class="figure align-default" id="id2">
 <img alt="../_images/mars_station.PNG" src="../_images/mars_station.PNG" />
-<p class="caption"><span class="caption-text">Figure 2: A robot that collects minerals in the Mars station.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Figure 2: A robot that collects minerals for the Mars station.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </td>
 </tr>
 </tbody>
 </table>
-<p>To better understand this problem we will cover the very basics of the two famous optimization problems: the Knapsack problem and the Travel Salesman problem.</p>
-<div class="section" id="the-knapsack-problem">
-<h3>The Knapsack problem<a class="headerlink" href="#the-knapsack-problem" title="Permalink to this headline">¶</a></h3>
-<p>The statement of the Knapsack problem is the following. There are items that we can select, each one with a value and some weight. The knapsack can only carry certain weight, known as capcity, otherwise will break.
-Then, the objective is to decide which items select and which leave in order to <strong>maximize</strong> the value of the things that we can put inside of our knapsack.</p>
-<p>The number of items to carry is not bounded, only the weight it can support.
-One first approximation to a solution might be to put the things with most value first. However, this does not lead to general optimal solution for this problem.</p>
-<p>The complexity of the problem is that it is necessary to search for (almost) all combinations in order to solve the problem which has a great computational cost. Or more technically, the Knapsack problem is NP-hard.</p>
-</div>
-<div class="section" id="the-travel-salesman-problem">
-<h3>The Travel Salesman Problem<a class="headerlink" href="#the-travel-salesman-problem" title="Permalink to this headline">¶</a></h3>
-<p>The Travel Salesman problem is about distances rather than weights. In this case we have a set of locations that we want to visit scattered over a space. All places have to be visited. What we want to minimize is the distance traveled, and thus save time and fuel, because we care about our employees and climate change.</p>
-</div>
-<div class="section" id="travel-salesman-representation">
-<h3>Travel Salesman representation<a class="headerlink" href="#travel-salesman-representation" title="Permalink to this headline">¶</a></h3>
-<p><strong>Graphs</strong> :The actual euclidian position of the locations is not relevant but the distance between them is. The problem is usually presented with a graph which vertexes are the locations and the edges are the distance from one vertex to the other.</p>
+<div class="section" id="graph-representation">
+<h3>Graph Representation<a class="headerlink" href="#graph-representation" title="Permalink to this headline">¶</a></h3>
+<p><strong>Graphs</strong>: The actual euclidian position of the locations is not relevant but the distance between them is. In the graph, the vertexes are the locations and the edges are the distance from one vertex to the other. We suppose for now that the the graph is undirected.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -107,7 +94,7 @@ One first approximation to a solution might be to put the things with most value
 <ul class="simple">
 <li><p>The picker will go from the current place to the next one.</p></li>
 <li><p>If there is a item to pick in the next location, the picker will take it and put it on a knapsack they carry on.</p></li>
-<li><p>The picker cannot take the item if the total weight of the items after taking it is grater than the sack capacity.</p></li>
+<li><p>The picker cannot take the item if the total weight of the items after taking it is greater than the sack capacity.</p></li>
 <li><p>If the picker goes to the Origin, it will unpack everything that there is on the sack and put it on the Origin’s bin.</p></li>
 </ul>
 <p>However, there is a constraint, the picker can not carry at the same time more than its capacity.</p>
@@ -142,11 +129,12 @@ One first approximation to a solution might be to put the things with most value
 </div>
 <div class="section" id="total-number-of-solutions">
 <h2>Total number of solutions<a class="headerlink" href="#total-number-of-solutions" title="Permalink to this headline">¶</a></h2>
-<p>To finish this article, we will explose the total number of possible solutions that this problem has.</p>
+<p>To finish this article, we will explose the total number of possible solutions that this problem has. The total number of valid solutions depends on the capacity and the elements’ weight but without losing the sense of generality:</p>
 <div class="math notranslate nohighlight">
-\[T_S(N) = 2^{N-1}\cdot N!\]</div>
+\[T_S(N) \leq 2^{N-1}\cdot N!\]</div>
 <p>The factorial of N, <span class="math notranslate nohighlight">\(N!\)</span>, represents all the possible order of picking elements without going throug the Origin.
 The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</span>, gathers all permutations of going from the element picked to the Origin between items. The picker can go to the Origin up to <span class="math notranslate nohighlight">\(N-1\)</span> times.</p>
+<p>The worst case scenario is the one where the picker has enough capcity to carry all elements at the same time. For capacities less than that, there are fewer possiblities.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
@@ -238,10 +226,10 @@ The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</sp
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Optimization Problem:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Knapsack and Travel Salesman Combined Problem I</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">Knapsack and Travel Salesman Combined Problem II</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">Knapsack and Travel Salesman Combined Problem III</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">Knapsack and Travel Salesman Combined Problem IV</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Picker Problem I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-1.html">The Picker Problem II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-2.html">The Picker Problem III</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knapsack-travelsman-3.html">The Picker Problem IV</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Robot Operating System (ROS):</span></p>
 <ul>
@@ -252,8 +240,8 @@ The exponential part, <span class="math notranslate nohighlight">\(2^{N-1}\)</sp
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to art roco’s!</a></li>
-      <li>Next: <a href="knapsack-travelsman-1.html" title="next chapter">Knapsack and Travel Salesman Combined Problem II</a></li>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to art rocò’s!</a></li>
+      <li>Next: <a href="knapsack-travelsman-1.html" title="next chapter">The Picker Problem II</a></li>
   </ul></li>
 </ul>
 </div>

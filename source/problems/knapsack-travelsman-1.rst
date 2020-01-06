@@ -1,5 +1,5 @@
 ================================================
-Knapsack and Travel Salesman Combined Problem II
+The Picker Problem II
 ================================================
 
 

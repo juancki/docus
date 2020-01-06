@@ -2,6 +2,7 @@
 ROS on GCP with Docker
 ======================
 
+
 Google anouced during 2018 a Cloud Robotics Platform (The Robot Report_) that will help compute and process online and offline data. Cloud robotics provide access to:
 
 - Parallel computing of hundreds of machines on the cloud.

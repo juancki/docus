@@ -1,5 +1,5 @@
 =================================================
-Knapsack and Travel Salesman Combined Problem III
+The Picker Problem III
 =================================================
 
 We will first approach to the solution with an heuristic solution and then, we will see an heuristic solution plus A* implementation.

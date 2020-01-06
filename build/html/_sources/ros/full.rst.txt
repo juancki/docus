@@ -2,6 +2,7 @@
 Ubuntu 18.04 LTS on GCP for ROS with GUI
 ========================================
 
+
 In this tutorial we will cover the script I created to make your own ROS development enviroment in a GCP instance. And then, connect to it using Google's Remote Desktop.
 
 In the turorial *Debian 9 docker ROS on GCP* we used the metadata information of the ``start-up`` script which allows for simple interface to execute commands in a bash format.

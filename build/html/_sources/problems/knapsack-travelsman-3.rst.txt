@@ -1,5 +1,5 @@
 ================================================
-Knapsack and Travel Salesman Combined Problem IV
+The Picker Problem IV
 ================================================
 
 Until now, we have presented the problem, a way to find an optimum solution using Breath First (BF) and a suboptimal solution with a heuristic function. 
